@@ -153,8 +153,12 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
  <div class="sheet">
   <h2>Agregar semilla <button data-close>✕</button></h2>
   <label>Nombre</label><input class="f" id="nNombre" placeholder="Ej: Zanahoria Chantenay">
-  <button class="autofill" id="autofill">✨ Completar datos automáticamente</button>
-  <div class="hint" id="afMsg">Escribí el nombre y tocá el botón: completa todo para Landeta. Después revisalo contra el sobre de semillas y corregí lo que haga falta.</div>
+  <button class="autofill" id="copyPrompt">📋 1. Copiar prompt para Claude</button>
+  <textarea class="f" id="pasteJson" rows="3" style="margin-top:8px"
+            placeholder="2. Pegá acá la respuesta de Claude…"></textarea>
+  <button class="autofill" id="loadJson">📥 3. Cargar datos pegados</button>
+  <div class="hint" id="afMsg">Copiás el prompt, lo pegás en Claude, y traés la respuesta de vuelta acá. Después revisá contra el sobre de semillas.</div>
+  <button class="autofill" id="autofill" style="display:none">✨ Completar automáticamente (usa tu API key)</button>
   <label>Nombre científico (para buscar fotos)</label>
   <input class="f" id="nSci" placeholder="Ej: Daucus carota">
   <label>Tipo</label>
@@ -191,10 +195,20 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
  <div class="sheet">
   <h2>Consultar <button data-close>✕</button></h2>
   <div id="noKey" style="display:none">
-    <label>API key de Anthropic</label>
-    <input class="f" id="apiKey" type="password" placeholder="sk-ant-…">
-    <div class="hint">Se guarda solo en este teléfono (localStorage). Nunca sale del navegador salvo hacia api.anthropic.com. No la pongas en el repo.</div>
-    <button class="save" id="saveKey">Guardar clave</button>
+    <label>Tu pregunta</label>
+    <textarea class="f" id="prepQ" rows="3" placeholder="Ej: ¿qué me conviene sembrar este fin de semana?"></textarea>
+    <button class="save" id="prepCopy">📋 Copiar consulta con todo el contexto</button>
+    <div class="hint" id="prepMsg">Copia la pregunta junto con la fecha, el clima, la temperatura del suelo y tus 65 variedades. Pegala en Claude y te responde con todo a la vista.</div>
+    <a class="autofill" id="prepOpen" href="https://claude.ai/new" target="_blank" rel="noopener"
+       style="display:block;text-align:center;text-decoration:none;margin-top:8px">Abrir Claude ↗</a>
+
+    <details style="margin-top:18px">
+      <summary style="font-size:12.5px;color:var(--muted);cursor:pointer">¿Preferís que responda acá adentro?</summary>
+      <label>API key de Anthropic</label>
+      <input class="f" id="apiKey" type="password" placeholder="sk-ant-…">
+      <div class="hint">Se paga aparte de la suscripción (platform.claude.com). Se guarda solo en este teléfono. No la pongas en el repo.</div>
+      <button class="save" id="saveKey">Guardar clave</button>
+    </details>
   </div>
   <div id="chatUI" style="display:none">
     <div id="chatLog"></div>
@@ -688,27 +702,85 @@ document.getElementById("nMeses").innerHTML=MES.map((m,i)=>'<button data-m="'+(i
 document.getElementById("nMeses").onclick=e=>{const b=e.target.closest("button");if(!b)return;
   const m=+b.dataset.m; mesesSel.includes(m)?mesesSel=mesesSel.filter(x=>x!==m):mesesSel.push(m);
   b.classList.toggle("on")};
-document.getElementById("openAdd").onclick=()=>open("mAdd");
+document.getElementById("openAdd").onclick=()=>{
+  document.getElementById("autofill").style.display=keyOK()?"block":"none";
+  open("mAdd");
+};
 
-/* --- completar datos con Claude --- */
+/* --- precarga de semillas nuevas --- */
 const setMeses=arr=>{mesesSel=arr.filter(m=>m>=1&&m<=12);
   document.querySelectorAll("#nMeses button").forEach(b=>b.classList.toggle("on",mesesSel.includes(+b.dataset.m)))};
+
+const ESQUEMA="Devolvé SOLO un objeto JSON, sin texto alrededor ni ```. "
+ +"Datos de cultivo de una planta para Landeta, Santa Fe, Argentina (hemisferio sur, zona pampeana húmeda, heladas de mayo a agosto). "
+ +"Tengo dos tapiales: uno recibe sol de mañana, otro sol de tarde (este acumula calor en el ladrillo).\n"
+ +'Claves exactas: {"sci":"nombre científico","t":"flor|hortaliza","m":"directo|almacigo|ambos",'
+ +'"ms":[meses de siembra como números 1-12],"sol":"Sol pleno|Sol o media sombra|Media sombra",'
+ +'"or":"T|M|C","orTxt":"una frase: T=tapial del sol de tarde, M=tapial del sol de mañana, C=cualquiera, y por qué",'
+ +'"tierra":"tipo de tierra en pocas palabras","riego":"frecuencia y criterio, breve",'
+ +'"tmin":temperatura mínima de suelo en °C para germinar (número),'
+ +'"g":"días de germinación","c":"días hasta cosecha o null","tr":"cuándo trasplantar o null",'
+ +'"nota":"dos o tres consejos concretos de manejo"}. '
+ +'Español rioplatense. Si no reconocés la planta, devolvé {"error":"no reconocida"}.';
+
+/* vuelca el JSON en el formulario */
+function aplicarDatos(o){
+  const set=(id,v)=>{if(v!=null&&v!=="")document.getElementById(id).value=v};
+  set("nSci",o.sci); set("nTierra",o.tierra); set("nRiego",o.riego); set("nTmin",o.tmin);
+  if(o.t) document.getElementById("nTipo").value=o.t;
+  if(o.m) document.getElementById("nMetodo").value=o.m;
+  if(o.or) document.getElementById("nOr").value=o.or;
+  if(o.sol&&[...document.getElementById("nSol").options].some(x=>x.value===o.sol))
+    document.getElementById("nSol").value=o.sol;
+  if(Array.isArray(o.ms)) setMeses(o.ms.map(Number));
+  set("nNotas",[o.g?"Germina en "+o.g+".":"",o.c?"Cosecha a los "+o.c+".":"",
+                o.tr?"Trasplante: "+o.tr:"",o.nota||""].filter(Boolean).join(" "));
+  afExtra={g:o.g||"",c:o.c||"",tr:o.tr||"",orTxt:o.orTxt||""};
+}
+function extraerJSON(txt){
+  txt=txt.replace(/```json?/gi,"").replace(/```/g,"").trim();
+  const a=txt.indexOf("{"), b=txt.lastIndexOf("}");
+  if(a<0||b<a) throw new Error("no encontré un JSON");
+  return JSON.parse(txt.slice(a,b+1));
+}
+async function copiar(txt){
+  try{await navigator.clipboard.writeText(txt);return true}
+  catch(e){
+    const ta=document.createElement("textarea");ta.value=txt;
+    ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);
+    ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(e2){}
+    document.body.removeChild(ta);return ok;
+  }
+}
+
+/* 1. copiar prompt */
+document.getElementById("copyPrompt").onclick=async()=>{
+  const n=document.getElementById("nNombre").value.trim(), msg=document.getElementById("afMsg");
+  if(!n){msg.textContent="Primero escribí el nombre de la semilla.";return}
+  const ok=await copiar(ESQUEMA+"\n\nPlanta: "+n);
+  msg.textContent=ok?"✓ Prompt copiado. Pegalo en Claude, copiá la respuesta y volvé."
+    :"No pude copiar solo. Probá de nuevo o cargá los datos a mano.";
+};
+
+/* 3. cargar la respuesta pegada */
+document.getElementById("loadJson").onclick=()=>{
+  const ta=document.getElementById("pasteJson"), msg=document.getElementById("afMsg");
+  const raw=ta.value.trim();
+  if(!raw){msg.textContent="Pegá primero la respuesta de Claude.";return}
+  try{
+    const o=extraerJSON(raw);
+    if(o.error){msg.textContent="Claude no reconoció esa planta. Cargala a mano.";return}
+    aplicarDatos(o); ta.value="";
+    msg.textContent="✓ Datos cargados. Revisalos y guardá.";
+  }catch(e){msg.textContent="Eso no parece la respuesta correcta ("+e.message+"). Copiá el JSON completo, con llaves.";}
+};
 document.getElementById("autofill").onclick=async()=>{
   const n=document.getElementById("nNombre").value.trim();
   const msg=document.getElementById("afMsg"), btn=document.getElementById("autofill");
   if(!n){msg.textContent="Primero escribí el nombre de la semilla.";return}
   if(!keyOK()){msg.innerHTML="Falta la clave de Anthropic. Cargala una vez desde el botón 💬 y después volvé acá.";return}
   btn.disabled=true; msg.textContent="Consultando…";
-  const sys="Devolvé SOLO un objeto JSON, sin texto alrededor ni ```. "
-   +"Datos de cultivo de una planta para Landeta, Santa Fe, Argentina (hemisferio sur, zona pampeana húmeda, heladas de mayo a agosto). "
-   +'Claves exactas: {"sci":"nombre científico","t":"flor|hortaliza","m":"directo|almacigo|ambos",'
-   +'"ms":[meses de siembra como números 1-12],"sol":"Sol pleno|Sol o media sombra|Media sombra",'
-   +'"or":"T|M|C","orTxt":"una frase: T=tapial del sol de tarde, M=tapial del sol de mañana, C=cualquiera, y por qué",'
-   +'"tierra":"tipo de tierra en pocas palabras","riego":"frecuencia y criterio, breve",'
-   +'"tmin":temperatura mínima de suelo en °C para germinar (número),'
-   +'"g":"días de germinación","c":"días hasta cosecha o null","tr":"cuándo trasplantar o null",'
-   +'"nota":"dos o tres consejos concretos de manejo"}. '
-   +"Español rioplatense. Si no es una planta que reconozcas, devolvé {\"error\":\"no reconocida\"}.";
+  const sys=ESQUEMA;
   try{
     const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
       headers:{"content-type":"application/json","x-api-key":ls.get("apiKey",""),
@@ -716,23 +788,11 @@ document.getElementById("autofill").onclick=async()=>{
       body:JSON.stringify({model:"claude-sonnet-5",max_tokens:900,system:sys,
         messages:[{role:"user",content:n}]})});
     const d=await r.json();
-    let txt=d.content?.[0]?.text||"";
+    const txt=d.content?.[0]?.text||"";
     if(!txt) throw new Error(d.error?.message||"sin respuesta");
-    txt=txt.replace(/```json?/gi,"").replace(/```/g,"").trim();
-    const o=JSON.parse(txt.slice(txt.indexOf("{"),txt.lastIndexOf("}")+1));
+    const o=extraerJSON(txt);
     if(o.error){msg.textContent="No reconoció esa planta. Cargala a mano.";btn.disabled=false;return}
-    const set=(id,v)=>{if(v!=null&&v!=="")document.getElementById(id).value=v};
-    set("nSci",o.sci); set("nTierra",o.tierra); set("nRiego",o.riego); set("nTmin",o.tmin);
-    if(o.t) document.getElementById("nTipo").value=o.t;
-    if(o.m) document.getElementById("nMetodo").value=o.m;
-    if(o.or) document.getElementById("nOr").value=o.or;
-    if(o.sol&&[...document.getElementById("nSol").options].some(x=>x.value===o.sol))
-      document.getElementById("nSol").value=o.sol;
-    if(Array.isArray(o.ms)) setMeses(o.ms.map(Number));
-    const extra=[o.g?"Germina en "+o.g+".":"",o.c?"Cosecha a los "+o.c+".":"",
-                 o.tr?"Trasplante: "+o.tr:"",o.nota||""].filter(Boolean).join(" ");
-    set("nNotas",extra);
-    afExtra={g:o.g||"",c:o.c||"",tr:o.tr||"",orTxt:o.orTxt||""};
+    aplicarDatos(o);
     msg.textContent="Listo. Revisá los campos y guardá.";
   }catch(e){msg.textContent="No pude traer los datos ("+e.message+"). Cargalos a mano.";}
   btn.disabled=false;
@@ -769,6 +829,39 @@ function chatUI(){
   document.getElementById("chatUI").style.display=keyOK()?"block":"none";
 }
 document.getElementById("openChat").onclick=()=>{chatUI();open("mChat")};
+
+/* --- sin clave: armar la consulta para pegar en Claude --- */
+document.getElementById("prepCopy").onclick=async()=>{
+  const pregunta=document.getElementById("prepQ").value.trim();
+  const msg=document.getElementById("prepMsg");
+  if(!pregunta){msg.textContent="Escribí primero la pregunta.";return}
+  const h=new Date();
+  const est=todas().map(p=>{const ev=evaluar(p);
+    return "- "+p.n+": "+({si:"sembrable ahora",justo:"al límite",frio:"suelo frío",esperar:"fuera de época"}[ev.nivel])
+      +" ("+p.m+", "+{T:"sol de tarde",M:"sol de mañana",C:"cualquier orientación"}[p.or||"C"]+")"}).join("\n");
+  const txt=
+"Contexto de mi huerta (generado por mi app, no hace falta que lo repitas):\n\n"
++"Ubicación: "+LUGAR+", Argentina. Hemisferio sur, zona pampeana húmeda.\n"
++"Fecha: "+h.toLocaleDateString("es-AR")+" ("+MESL[h.getMonth()]+").\n"
++(clima?"Clima ahora: "+clima.temp+"°C. Hoy máx "+clima.dias[0].max+"° / mín "+clima.dias[0].min+"°.\n"
+  +"Temperatura del suelo a 6 cm: "+(clima.suelo??"?")+"°C.\n"
+  +"Mínimas de los próximos 7 días: "+clima.dias.map(d=>d.min+"°").join(", ")+".\n"
+  +"Lluvia próximos 7 días: "+clima.dias.map(d=>d.pp+"%").join(", ")+".\n":"")
++"Tengo dos tapiales: uno recibe sol de mañana y otro sol de tarde (este último acumula calor en el ladrillo).\n\n"
++"Estado de mis semillas hoy:\n"+est+"\n\n"
++"Mi pregunta: "+pregunta+"\n\n"
++"Respondé en español rioplatense, breve y concreto.";
+  let ok=false;
+  try{await navigator.clipboard.writeText(txt);ok=true}
+  catch(e){
+    const ta=document.createElement("textarea");ta.value=txt;
+    ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);
+    ta.select();try{ok=document.execCommand("copy")}catch(e2){}
+    document.body.removeChild(ta);
+  }
+  msg.textContent=ok?"✓ Copiado. Abrí Claude y pegalo."
+    :"No pude copiar solo. Tocá 'Abrir Claude' y contá tu pregunta ahí.";
+};
 document.getElementById("saveKey").onclick=()=>{
   const k=document.getElementById("apiKey").value.trim();
   if(!k.startsWith("sk-ant")){alert("No parece una clave válida.");return}
