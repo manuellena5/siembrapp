@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#265c21">
+<title>Huerta Landeta</title>
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22Huerta%20Landeta%22%2C%22short_name%22%3A%22Huerta%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f2f7f0%22%2C%22theme_color%22%3A%22%23265c21%22%7D">
+<style>
+:root{
+  --bg:#f2f7f0; --card:#fff; --border:#dde8da; --text:#1a2e19; --muted:#6e8b6a;
+  --green:#265c21; --green2:#388e3c; --greenL:#e8f5e9;
+  --teal:#00695c; --tealL:#e0f2f1;
+  --orange:#bf360c; --orangeL:#fff3e0;
+  --purple:#6a1b9a; --purpleL:#f3e5f5;
+  --amber:#a16207; --amberL:#fef9c3;
+  --red:#b71c1c; --redL:#ffebee;
+  --sunT:#c2410c; --sunTL:#ffedd5;
+  --sunM:#0369a1; --sunML:#e0f2fe;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);
+     padding:12px 14px 90px;max-width:620px;margin:0 auto;font-size:15px}
+h1,h2{margin:0}
+button{font-family:inherit;cursor:pointer;border:none}
+input,select,textarea{font-family:inherit;font-size:15px}
+a{color:var(--green)}
+
+.hero{background:linear-gradient(140deg,var(--green),var(--green2) 60%,#5d9655);border-radius:18px;
+      padding:16px 18px;color:#fff;margin-bottom:12px}
+.hero h1{font-size:20px;font-weight:800;letter-spacing:-.4px}
+.hero .sub{font-size:12px;opacity:.85;margin-top:2px}
+.wrow{display:flex;gap:14px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.wnow{font-size:30px;font-weight:800;line-height:1}
+.wmeta{font-size:11.5px;opacity:.9;line-height:1.55}
+.wdays{display:flex;gap:6px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.wdays::-webkit-scrollbar{display:none}
+.wday{background:rgba(255,255,255,.15);border-radius:9px;padding:6px 8px;text-align:center;min-width:52px;flex-shrink:0}
+.wday b{display:block;font-size:10px;opacity:.8;font-weight:600;text-transform:uppercase}
+.wday span{font-size:12px;font-weight:700}
+.wday i{display:block;font-size:10px;opacity:.75;font-style:normal}
+
+.seg{background:#fff;border-radius:12px;padding:4px;display:flex;gap:3px;margin-bottom:9px;
+     box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.seg button{flex:1;padding:9px 4px;border-radius:9px;font-weight:700;font-size:13px;background:transparent;color:var(--muted)}
+.seg button.on{background:var(--green);color:#fff}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.chip{padding:5px 12px;border-radius:14px;font-size:12px;font-weight:600;background:var(--greenL);color:var(--green)}
+.chip.on{background:var(--green);color:#fff}
+.search{width:100%;padding:10px 12px;border-radius:11px;border:1px solid var(--border);margin-bottom:10px;background:#fff}
+.count{font-size:11.5px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.count button{background:none;color:var(--green);font-weight:700;font-size:12px;padding:0}
+
+.card{background:#fff;border:1px solid var(--border);border-left:4px solid var(--green);border-radius:12px;
+      margin-bottom:7px;overflow:hidden}
+.card.open{background:#f8fcf6}
+.chead{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.emoji{font-size:21px;flex-shrink:0}
+.cname{font-weight:700;font-size:14px;line-height:1.2;margin-bottom:4px}
+.sci{font-size:10.5px;color:var(--muted);font-style:italic;font-weight:400}
+.tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{padding:2px 7px;border-radius:9px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.arrow{color:#c0d0bc;font-size:11px;font-weight:700;flex-shrink:0}
+.cbody{padding:2px 12px 12px;border-top:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.fact{background:#f3f8f2;border-radius:8px;padding:7px 9px}
+.fact .k{font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.fact .v{font-size:12.5px;line-height:1.45}
+.wide{grid-column:1/-1}
+.why{margin-top:7px;border-radius:8px;padding:7px 10px;font-size:12px;line-height:1.5}
+
+/* Foto */
+.foto{margin-top:9px;border-radius:10px;overflow:hidden;background:#eef4ec;position:relative;
+      min-height:60px;display:flex;align-items:center;justify-content:center}
+.foto img{width:100%;display:block;max-height:220px;object-fit:cover}
+.foto .ph{font-size:11.5px;color:var(--muted);padding:16px}
+.links{display:flex;gap:7px;margin-top:7px}
+.links a{flex:1;text-align:center;padding:8px;border-radius:9px;background:#fff;border:1px solid var(--border);
+         font-size:12px;font-weight:700;text-decoration:none}
+
+/* Orientación de sol */
+.orient{margin-top:9px;border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.5}
+.orient b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;opacity:.8}
+.o-T{background:var(--sunTL);color:var(--sunT)}
+.o-M{background:var(--sunML);color:var(--sunM)}
+.o-C{background:var(--greenL);color:var(--green)}
+
+.fab{position:fixed;bottom:18px;right:16px;display:flex;flex-direction:column;gap:9px;z-index:50}
+.fab button{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;font-size:22px;
+            box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.fab button.alt{background:#fff;color:var(--green);border:1px solid var(--border)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;align-items:flex-end}
+.modal.on{display:flex}
+.sheet{background:var(--bg);width:100%;max-height:92vh;border-radius:18px 18px 0 0;padding:16px 14px;
+       overflow-y:auto;max-width:620px;margin:0 auto}
+.sheet h2{font-size:17px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.sheet h2 button{background:none;font-size:22px;color:var(--muted);padding:0 4px}
+label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.04em;margin:10px 0 4px}
+.f{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--border);background:#fff}
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.months button{padding:7px 0;border-radius:8px;font-size:11.5px;font-weight:700;background:#fff;
+               border:1px solid var(--border);color:var(--muted)}
+.months button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.save{width:100%;padding:12px;border-radius:11px;background:var(--green);color:#fff;font-weight:700;
+      font-size:15px;margin-top:16px}
+.autofill{width:100%;padding:10px;border-radius:10px;background:var(--greenL);color:var(--green);
+          font-weight:700;font-size:13.5px;margin-top:8px;border:1px dashed var(--green)}
+.autofill:disabled{opacity:.55}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:6px}
+
+#chatLog{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;
+         min-height:180px;max-height:52vh;overflow-y:auto;font-size:13.5px;line-height:1.6}
+.msg{margin-bottom:10px;white-space:pre-wrap}
+.msg.u{text-align:right}
+.msg.u span{background:var(--greenL);color:var(--green);padding:7px 11px;border-radius:12px;
+            display:inline-block;text-align:left;max-width:85%}
+.msg.a span{display:block}
+.chatbar{display:flex;gap:7px;margin-top:9px}
+.chatbar input{flex:1;padding:10px 12px;border-radius:11px;border:1px solid var(--border)}
+.chatbar button{padding:0 16px;border-radius:11px;background:var(--green);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌱 Huerta Landeta</h1>
+  <div class="sub" id="hoy">—</div>
+  <div class="wrow">
+    <div class="wnow" id="wtemp">--°</div>
+    <div class="wmeta" id="wmeta">Cargando clima…</div>
+  </div>
+  <div class="wdays" id="wdays"></div>
+</div>
+
+<div class="seg">
+  <button data-tab="ahora" class="on">✅ Sembrar ahora</button>
+  <button data-tab="esperar">⏳ Esperar</button>
+  <button data-tab="todas">📋 Todas</button>
+</div>
+
+<div class="chips" id="chips"></div>
+<input class="search" id="q" placeholder="Buscar…" autocomplete="off">
+<div class="count"><span id="count"></span><button id="collapse">Cerrar todo</button></div>
+<div id="list"></div>
+
+<div class="fab">
+  <button class="alt" id="openAdd" title="Agregar semilla">＋</button>
+  <button id="openChat" title="Consultar">💬</button>
+</div>
+
+<div class="modal" id="mAdd">
+ <div class="sheet">
+  <h2>Agregar semilla <button data-close>✕</button></h2>
+  <label>Nombre</label><input class="f" id="nNombre" placeholder="Ej: Zanahoria Chantenay">
+  <button class="autofill" id="autofill">✨ Completar datos automáticamente</button>
+  <div class="hint" id="afMsg">Escribí el nombre y tocá el botón: completa todo para Landeta. Después revisalo contra el sobre de semillas y corregí lo que haga falta.</div>
+  <label>Nombre científico (para buscar fotos)</label>
+  <input class="f" id="nSci" placeholder="Ej: Daucus carota">
+  <label>Tipo</label>
+  <select class="f" id="nTipo"><option value="hortaliza">Hortaliza</option><option value="flor">Flor</option></select>
+  <label>Método de siembra</label>
+  <select class="f" id="nMetodo">
+    <option value="directo">Directo a tierra</option>
+    <option value="almacigo">Almácigo</option>
+    <option value="ambos">Ambos</option>
+  </select>
+  <label>Meses de siembra</label>
+  <div class="months" id="nMeses"></div>
+  <label>Horas de sol</label>
+  <select class="f" id="nSol">
+    <option>Sol pleno</option><option>Sol o media sombra</option><option>Media sombra</option>
+  </select>
+  <label>Orientación (tus tapiales)</label>
+  <select class="f" id="nOr">
+    <option value="C">Cualquiera de los dos</option>
+    <option value="T">Tapial del sol de tarde</option>
+    <option value="M">Tapial del sol de mañana</option>
+  </select>
+  <label>Tipo de tierra</label><input class="f" id="nTierra" placeholder="Ej: suelta, profunda, bien drenada">
+  <label>Riego</label><input class="f" id="nRiego" placeholder="Ej: cada 2–3 días, moderado">
+  <label>Temp. mínima de suelo (°C)</label>
+  <input class="f" id="nTmin" type="number" value="8" inputmode="numeric">
+  <div class="hint">Por debajo de este valor la app te avisa que el suelo está frío. Hoja de invierno ≈ 6–8, raíces ≈ 8–10, tomate/pimiento/zapallo ≈ 15–18.</div>
+  <label>Notas</label><textarea class="f" id="nNotas" rows="3" placeholder="Germinación, trasplante, cuidados…"></textarea>
+  <button class="save" id="saveSeed">Guardar</button>
+ </div>
+</div>
+
+<div class="modal" id="mChat">
+ <div class="sheet">
+  <h2>Consultar <button data-close>✕</button></h2>
+  <div id="noKey" style="display:none">
+    <label>API key de Anthropic</label>
+    <input class="f" id="apiKey" type="password" placeholder="sk-ant-…">
+    <div class="hint">Se guarda solo en este teléfono (localStorage). Nunca sale del navegador salvo hacia api.anthropic.com. No la pongas en el repo.</div>
+    <button class="save" id="saveKey">Guardar clave</button>
+  </div>
+  <div id="chatUI" style="display:none">
+    <div id="chatLog"></div>
+    <div class="chatbar">
+      <input id="chatIn" placeholder="Preguntá algo de la huerta…">
+      <button id="chatSend">➤</button>
+    </div>
+    <div class="hint">Ya conoce tu ubicación, la fecha, el clima de hoy y todas tus semillas.
+      <a href="#" id="clearKey">Borrar clave</a></div>
+  </div>
+ </div>
+</div>
+
+<script>
+/* ═══ 1. DATOS ═══
+   ms  : meses de siembra (1=ene … 12=dic, hemisferio sur)
+   tmin: temperatura de suelo mínima para germinar
+   or  : T = tapial del sol de tarde · M = tapial del sol de mañana · C = cualquiera
+   sci : nombre científico (para buscar la foto)
+*/
+const BASE=[
+/* ---------- FLORES ---------- */
+{n:"Caléndula",e:"🌼",sci:"Calendula officinalis",t:"flor",m:"ambos",ms:[2,3,4,5,6,7,8,9],tmin:7,
+ sol:"Sol pleno",or:"C",orTxt:"Anda en los dos. Si el verano pega fuerte, el lado de la mañana le alarga la floración.",
+ tierra:"Común, bien drenada. No exige riqueza.",riego:"Cada 2–3 días, moderado. Sin encharcar.",
+ g:"7–14 días",tr:"Con 4–6 hojas verdaderas (~6–8 semanas).",
+ nota:"Muy rústica y fácil. Cortá las flores marchitas para que siga floreciendo. Compañera del tomate, pimiento y berenjena: repele nematodos."},
+{n:"Siempreviva",e:"🌸",sci:"Xerochrysum bracteatum",t:"flor",m:"almacigo",ms:[8,9,10],tmin:12,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. Quiere calor y suelo seco; el reflejo del ladrillo la favorece.",
+ tierra:"Pobre y muy bien drenada. Odia el encharcamiento.",riego:"Cada 4–5 días. Tolera sequía.",
+ g:"10–21 días",tr:"A las 8–10 semanas.",nota:"Crecimiento lento al inicio. Las flores secas duran meses."},
+{n:"Lino Rubrum Rojo",e:"🌺",sci:"Linum grandiflorum",t:"flor",m:"directo",ms:[3,4,5,8,9,10],tmin:10,
+ sol:"Sol pleno",or:"M",orTxt:"Tapial del sol de mañana. Con el calor de la tarde en pleno verano la flor dura menos.",
+ tierra:"Suelta y drenada. No tolera agua estancada.",riego:"Cada 3–4 días. Mejor corto que pasado.",
+ g:"10–14 días",tr:"No se trasplanta: raíz pivotante.",
+ nota:"Sembrar donde va a florecer. Queda mucho mejor agrupado en mancha que suelto. Se autosiembra año a año."},
+{n:"Conejito Tom Pounce",e:"🐰",sci:"Antirrhinum majus",t:"flor",m:"almacigo",ms:[2,3,4,7,8,9],tmin:10,
+ sol:"Sol pleno",or:"M",orTxt:"Tapial del sol de mañana. Con calor fuerte de tarde corta la floración.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días.",
+ g:"14–21 días",tr:"Con 3–4 hojas (~6–8 semanas).",nota:"Luz indirecta mientras germina. Proteger de heladas fuertes."},
+{n:"Salpiglossis",e:"🌷",sci:"Salpiglossis sinuata",t:"flor",m:"almacigo",ms:[7,8,9],tmin:12,
+ sol:"Sol de mañana",or:"M",orTxt:"Tapial del sol de mañana, sin dudarlo. El sol de tarde le quema las flores.",
+ tierra:"Rica y drenada.",riego:"Cada 2–3 días, sin exceso.",
+ g:"14–21 días",tr:"8–10 semanas.",nota:"Semilla muy chica: NO cubrir con tierra, necesita luz para germinar."},
+{n:"Pensamiento Gigante de Suiza",e:"😊",sci:"Viola × wittrockiana",t:"flor",m:"almacigo",ms:[2,3,4,5],tmin:8,
+ sol:"Sol pleno en invierno",or:"M",orTxt:"Tapial del sol de mañana. Es flor de invierno: en cuanto aprieta el calor de la tarde se agota.",
+ tierra:"Rica, fresca, drenada.",riego:"Cada 2 días. Le gusta la humedad moderada.",
+ g:"10–15 días",tr:"Con 4–5 hojas (~6–8 semanas).",nota:"Sembrado fuera de otoño florece poco y se agota con el calor."},
+{n:"Alhelí de Mahón",e:"💜",sci:"Malcolmia maritima",t:"flor",m:"ambos",ms:[3,4,5,6],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos. Florece en invierno–primavera, cuando ningún lado castiga.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días, moderado.",
+ g:"7–14 días",tr:"Con 5–6 hojas (~6–8 semanas).",nota:"Muy aromático. Tolera heladas suaves una vez establecido."},
+{n:"Crisantemo",e:"🌻",sci:"Chrysanthemum",t:"flor",m:"almacigo",ms:[8,9,10],tmin:12,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Florece en otoño, con el sol ya suave de los dos lados.",
+ tierra:"Rica y drenada.",riego:"Cada 2 días. No mojar las hojas.",
+ g:"10–20 días",tr:"8–10 semanas.",nota:"Pinzá el tallo principal para que ramifique."},
+{n:"Alyso",e:"🤍",sci:"Lobularia maritima",t:"flor",m:"ambos",ms:[3,4,5,8,9,10,11],tmin:10,
+ sol:"Sol o media sombra",or:"C",orTxt:"El más flexible: anda en los dos tapiales y hasta en media sombra.",
+ tierra:"Cualquiera con buen drenaje.",riego:"Cada 3–4 días. Resiste sequía.",
+ g:"7–14 días",tr:"Con 3–4 hojas, o directo sin ralear.",
+ nota:"Borde bajo: al frente del cantero, entre baldosas, al pie de plantas altas. Cuanto más denso, mejor. Atrae polinizadores."},
+{n:"Conejito Gigante",e:"🌿",sci:"Antirrhinum majus",t:"flor",m:"almacigo",ms:[2,3,4,7,8,9],tmin:10,
+ sol:"Sol pleno",or:"M",orTxt:"Tapial del sol de mañana, igual que el Tom Pounce.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días.",
+ g:"14–21 días",tr:"Con 4–5 hojas (~7–9 semanas).",nota:"Mismo manejo que el Tom Pounce pero de porte mayor."},
+{n:"Margarita Blanca",e:"🌼",sci:"Leucanthemum vulgare",t:"flor",m:"almacigo",ms:[2,3,4,8,9,10],tmin:10,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos. Muy adaptable.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días, moderado.",
+ g:"10–20 días",tr:"Con 5–6 hojas (~8–10 semanas).",nota:"Sacá las flores secas para prolongar la floración."},
+{n:"Eschscholtzia",e:"🧡",sci:"Eschscholzia californica",t:"flor",m:"directo",ms:[3,4,5,8,9,10],tmin:10,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde — su mejor lugar. Cuanto más castigado y seco el sector, mejor rinde.",
+ tierra:"Pobre, seca y bien drenada. En tierra rica da hoja y poca flor.",riego:"Muy poco. Cada 5–6 días; establecida, casi solo lluvia.",
+ g:"10–14 días",tr:"No se trasplanta: raíz pivotante.",
+ nota:"Se autosiembra sola año a año, así que elegí bien el lugar la primera vez."},
+{n:"Nigella",e:"💙",sci:"Nigella damascena",t:"flor",m:"directo",ms:[3,4,5,8,9,10],tmin:10,
+ sol:"Sol pleno",or:"M",orTxt:"Tapial del sol de mañana. Tolera algo de sombra a la tarde sin problema.",
+ tierra:"Común, drenada.",riego:"Cada 3 días.",
+ g:"10–14 días",tr:"No tolera trasplante.",nota:"Follaje muy fino. Las vainas que quedan después de la flor también son decorativas y sirven secas."},
+{n:"Copete (Tagete)",e:"🟡",sci:"Tagetes patula",t:"flor",m:"ambos",ms:[8,9,10,11,12],tmin:15,
+ sol:"Sol pleno",or:"T",orTxt:"Aguanta bien el tapial de la tarde. Cuanto más sol, más flor.",
+ tierra:"Común. Poco exigente.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas (~5 semanas).",nota:"Almácigo en ago–sep, directo de oct en adelante. Repele plagas de la huerta."},
+{n:"Portulaca",e:"🌸",sci:"Portulaca grandiflora",t:"flor",m:"ambos",ms:[10,11,12],tmin:20,
+ sol:"Sol pleno intenso",or:"T",orTxt:"Tapial del sol de tarde. Cuanto más duro el lugar, mejor: ama el calor seco.",
+ tierra:"Pobre y arenosa.",riego:"Muy poco. Cada 5–7 días.",
+ g:"7–14 días",tr:"Con 3–4 hojas.",nota:"Necesita suelo muy cálido. Las flores se cierran de noche."},
+{n:"Rudbeckia",e:"🌻",sci:"Rudbeckia hirta",t:"flor",m:"almacigo",ms:[8,9,10],tmin:15,
+ sol:"Sol pleno",or:"T",orTxt:"Aguanta el tapial de la tarde sin problema.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días.",
+ g:"7–14 días",tr:"Con 4–5 hojas (~6 semanas).",nota:"Florece todo el verano. Muy resistente una vez establecida."},
+{n:"Ficoide / Rayito de sol",e:"⚡",sci:"Dorotheanthus bellidiformis",t:"flor",m:"almacigo",ms:[10,11],tmin:20,
+ sol:"Sol pleno intenso",or:"T",orTxt:"Tapial del sol de tarde. Necesita el calor más fuerte que tengas.",
+ tierra:"Pobre, arenosa, muy drenada.",riego:"Muy poco.",
+ g:"10–15 días",tr:"Con 3–4 hojas.",nota:"Subtropical: el frío la mata. Esperar suelo bien caliente."},
+{n:"Petunia Enana",e:"💗",sci:"Petunia × hybrida",t:"flor",m:"almacigo",ms:[8,9],tmin:15,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. En enero, el lado de la mañana le conserva mejor la flor.",
+ tierra:"Rica y drenada.",riego:"Cada 2 días.",
+ g:"7–14 días",tr:"Con 4–5 hojas (~6–8 semanas).",nota:"Semilla muy chica: apenas presionar, sin cubrir."},
+{n:"Marimoña (ranúnculo)",e:"🌹",sci:"Ranunculus asiaticus",t:"flor",m:"directo",ms:[3,4,5],tmin:8,
+ sol:"Sol o media sombra",or:"M",orTxt:"Tapial del sol de mañana. Quiere el sol suave del invierno; el de verano le acorta la floración.",
+ tierra:"Suelta y muy drenada. El bulbo se pudre con facilidad.",riego:"Cada 2–3 días. Cortar del todo cuando amarillea la hoja.",
+ g:"15–20 días",tr:"Va por bulbo, no por semilla.",
+ nota:"Garritas con las puntas hacia abajo, a 5 cm. Remojarlas 3–4 h antes ayuda al arranque. Terminada la floración se desentierran y se guardan secas hasta marzo."},
+
+/* ---------- HORTALIZAS: directo ---------- */
+{n:"Arveja",e:"🫛",sci:"Pisum sativum",t:"hortaliza",m:"directo",ms:[3,4,5,6,7,8],tmin:6,
+ sol:"Sol pleno",or:"M",orTxt:"Lado de la mañana. Es de invierno: si la agarra el calor, deja de producir.",
+ tierra:"Común, drenada. Fija nitrógeno.",riego:"Cada 3–4 días. Reducir cerca de la cosecha.",
+ g:"7–12 días",c:"70–90 días",nota:"Trepadora: necesita red o alambre. Sembrar a 3 cm de profundidad, 5–8 cm entre semillas."},
+{n:"Rúcula",e:"🥬",sci:"Eruca vesicaria",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9,10],tmin:6,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con sol de tarde fuerte se espiga y se pone muy picante.",
+ tierra:"Común, fresca.",riego:"Cada 2–3 días. Mantener húmedo.",
+ g:"5–7 días",c:"25–35 días",nota:"Muy rápida. Cortá hojas externas y dejá el centro. Se resiembra sola."},
+{n:"Espinaca",e:"🌿",sci:"Spinacia oleracea",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8],tmin:5,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. El calor la espiga enseguida.",
+ tierra:"Rica en materia orgánica.",riego:"Cada 2–3 días. Le gusta la humedad.",
+ g:"7–14 días",c:"40–60 días",nota:"Tolera heladas."},
+{n:"Radicheta",e:"🥗",sci:"Cichorium intybus",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9],tmin:6,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con calor el amargor se vuelve excesivo.",
+ tierra:"Común.",riego:"Cada 2–3 días.",
+ g:"5–10 días",c:"30–50 días",nota:"Muy rústica. El amargor justo aparece con el frío."},
+{n:"Zanahoria Larga Cordobesa",e:"🥕",sci:"Daucus carota",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9,10],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Lo que le importa es la profundidad del suelo, no la orientación.",
+ tierra:"Suelta, profunda, sin piedras ni cascotes.",riego:"Cada 2–3 días, regular y profundo.",
+ g:"10–20 días",c:"90–120 días",nota:"No se trasplanta. Ralear a 5 cm entre plantas."},
+{n:"Zanahoria",e:"🥕",sci:"Daucus carota",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9,10],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Suelta y profunda.",riego:"Cada 2–3 días.",
+ g:"10–20 días",c:"80–110 días",nota:"Ralear a 4–5 cm. No transplanta."},
+{n:"Remolacha",e:"🔴",sci:"Beta vulgaris",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9,10],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos. Muy adaptable.",
+ tierra:"Suelta, con materia orgánica.",riego:"Cada 2–3 días, moderado.",
+ g:"7–14 días",c:"60–80 días",nota:"Cada 'semilla' trae varias: sembrá y después raleá a una. Las hojas también se comen."},
+{n:"Rabanito",e:"🌱",sci:"Raphanus sativus",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9,10,11],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con calor de tarde se pone hueco y picante antes de tiempo.",
+ tierra:"Suelta y fresca.",riego:"Cada 1–2 días. Siempre húmedo.",
+ g:"3–5 días",c:"25–30 días",nota:"El más rápido del huerto. Cosechar puntual. Sembrá en tandas escalonadas."},
+{n:"Cilantro",e:"🌿",sci:"Coriandrum sativum",t:"hortaliza",m:"directo",ms:[3,4,5,8,9,10],tmin:10,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. El sol de tarde lo hace florecer y dejar de dar hoja.",
+ tierra:"Común, drenada.",riego:"Cada 2–3 días.",
+ g:"7–14 días",c:"30–45 días (hoja)",nota:"No tolera trasplante. Cortá las flores para que siga dando hoja."},
+{n:"Hinojo",e:"🌾",sci:"Foeniculum vulgare",t:"hortaliza",m:"directo",ms:[2,3,4,8,9,10],tmin:10,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Suelta y profunda.",riego:"Cada 2–3 días.",
+ g:"7–14 días",c:"70–90 días",nota:"No lo plantes cerca de tomates: los inhibe. Bulbo, hoja y semilla son comestibles."},
+{n:"Nabo",e:"⬜",sci:"Brassica rapa",t:"hortaliza",m:"directo",ms:[2,3,4,5,6,7,8,9],tmin:6,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Bien trabajada y suelta.",riego:"Cada 2–3 días.",
+ g:"5–7 días",c:"45–60 días",nota:"Ralear a 8 cm. Cosechar con el bulbo de 5–8 cm."},
+{n:"Mostaza",e:"🌱",sci:"Brassica juncea",t:"hortaliza",m:"directo",ms:[3,4,5,6,7,8,9],tmin:6,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con calor florece rápido y deja de dar hoja.",
+ tierra:"Común.",riego:"Cada 2–3 días.",
+ g:"5–7 días",c:"25–35 días (hoja)",nota:"Muy rápida. Excelente abono verde si la enterrás antes de florecer."},
+
+/* ---------- HORTALIZAS: almácigo ---------- */
+{n:"Acelga",e:"🥬",sci:"Beta vulgaris",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9],tmin:8,
+ sol:"Sol o media sombra",or:"C",orTxt:"Cualquiera. Es de las más tolerantes que tenés.",
+ tierra:"Rica en materia orgánica.",riego:"Cada 2 días.",
+ g:"7–14 días",tr:"Con 3–4 hojas verdaderas (~5–6 semanas).",nota:"Muy productiva. Cosechá hojas externas y produce casi todo el año."},
+{n:"Lechuga 4 Estaciones",e:"🥗",sci:"Lactuca sativa",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Toda lechuga con sol de tarde fuerte se espiga y amarga.",
+ tierra:"Fresca, con materia orgánica.",riego:"Cada 1–2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas (~4–5 semanas). A 25–30 cm.",nota:"De octubre en adelante conviene tirarla directo, sin almácigo."},
+{n:"Lechuga Capuchina",e:"🥗",sci:"Lactuca sativa",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana.",
+ tierra:"Fresca.",riego:"Cada 1–2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas.",nota:"Buena para maceta."},
+{n:"Lechuga Crespa",e:"🥗",sci:"Lactuca sativa",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana.",
+ tierra:"Fresca.",riego:"Cada 1–2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas.",nota:"Hoja rizada, muy decorativa."},
+{n:"Lechuga Mantecosa",e:"🥗",sci:"Lactuca sativa",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:7,
+ sol:"Media sombra en verano",or:"M",orTxt:"Lado de la mañana, es la más delicada de las cinco. En verano, directamente media sombra.",
+ tierra:"Fresca.",riego:"Cada 1–2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas.",nota:"Hoja suave. No tolera sol excesivo."},
+{n:"Lechuga Criolla",e:"🥗",sci:"Lactuca sativa",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Es la que más aguanta de las cinco, pero igual prefiere ese lado.",
+ tierra:"Fresca.",riego:"Cada 1–2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas.",nota:"Variedad local, resistente y muy productiva."},
+{n:"Brócoli",e:"🥦",sci:"Brassica oleracea var. italica",t:"hortaliza",m:"almacigo",ms:[1,2,3,4],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Crece en otoño–invierno, cuando ningún lado castiga.",
+ tierra:"Rica, firme, con compost.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas (~6 semanas). A 40–50 cm.",
+ nota:"Cosechá la cabeza central antes de que abra; después brotan los laterales. Sembrado en primavera se va al calor y no arma cabeza."},
+{n:"Achicoria",e:"🌿",sci:"Cichorium intybus",t:"hortaliza",m:"almacigo",ms:[2,3,4,5,8,9,10],tmin:8,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con calor el amargor se dispara.",
+ tierra:"Común.",riego:"Cada 2–3 días.",
+ g:"7–14 días",tr:"Con 4–5 hojas.",nota:"Amargor suave, muy buena en ensalada."},
+{n:"Cebolla de Verdeo",e:"🧅",sci:"Allium fistulosum",t:"hortaliza",m:"almacigo",ms:[2,3,4,5,6,7,8,9],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Suelta, drenada.",riego:"Cada 2–3 días.",
+ g:"7–14 días",tr:"Con 15–20 cm de altura (~8–10 semanas), en grupos de 4–5.",nota:"Sembrar denso en el almácigo."},
+{n:"Cebolla Valenciana",e:"🧅",sci:"Allium cepa",t:"hortaliza",m:"almacigo",ms:[4,5,6,7],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera, pero cuanto más sol total reciba, más grande el bulbo.",
+ tierra:"Suelta y drenada.",riego:"Cada 2–3 días. Reducir cuando el bulbo madura.",
+ g:"10–14 días",tr:"Con 15–20 cm (~10–12 semanas). A 10–15 cm.",nota:"Se cosecha cuando las hojas se vuelcan solas."},
+{n:"Repollito de Bruselas",e:"🥦",sci:"Brassica oleracea var. gemmifera",t:"hortaliza",m:"almacigo",ms:[12,1,2,3],tmin:10,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Ciclo largo de otoño–invierno.",
+ tierra:"Rica y firme.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas (~5–6 semanas). A 50–60 cm.",nota:"Los repollitos brotan en el tallo: cosechá de abajo hacia arriba."},
+{n:"Repollo",e:"🥬",sci:"Brassica oleracea var. capitata",t:"hortaliza",m:"almacigo",ms:[1,2,3,4,7,8,9],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Rica y firme.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas. A 50 cm.",nota:"Cosechar con la cabeza firme y compacta."},
+{n:"Repollo Colorado",e:"🟣",sci:"Brassica oleracea var. capitata",t:"hortaliza",m:"almacigo",ms:[1,2,3,4,7,8,9],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Rica y firme.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas. A 50 cm.",nota:"Más lento que el verde. Muy decorativo."},
+{n:"Coliflor",e:"⬜",sci:"Brassica oleracea var. botrytis",t:"hortaliza",m:"almacigo",ms:[12,1,2,3],tmin:10,
+ sol:"Sol pleno",or:"M",orTxt:"Lado de la mañana. El sol fuerte le amarillea la cabeza.",
+ tierra:"Rica, firme, con compost.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas. A 50 cm.",nota:"Atá las hojas externas sobre la cabeza para blanquearla."},
+{n:"Escarola Fina",e:"🥗",sci:"Cichorium endivia",t:"hortaliza",m:"almacigo",ms:[1,2,3,4,8,9],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana.",
+ tierra:"Común, fresca.",riego:"Cada 2 días.",
+ g:"7–14 días",tr:"Con 4–5 hojas.",nota:"Tolera muy bien el frío."},
+{n:"Escarola Ancha",e:"🥗",sci:"Cichorium endivia",t:"hortaliza",m:"almacigo",ms:[1,2,3,4,8,9],tmin:7,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana.",
+ tierra:"Común, fresca.",riego:"Cada 2 días.",
+ g:"7–14 días",tr:"Con 4–5 hojas.",nota:"Muy rústica, hoja más ancha."},
+{n:"Kale",e:"🥬",sci:"Brassica oleracea var. sabellica",t:"hortaliza",m:"almacigo",ms:[1,2,3,4,7,8,9],tmin:6,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. De las más resistentes que tenés.",
+ tierra:"Rica en materia orgánica.",riego:"Cada 2 días.",
+ g:"5–10 días",tr:"Con 4–5 hojas (~5–6 semanas).",nota:"El frío le mejora el sabor. Tolera heladas perfectamente."},
+{n:"Puerro",e:"🧅",sci:"Allium ampeloprasum",t:"hortaliza",m:"almacigo",ms:[3,4,5,6,7],tmin:8,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Suelta y profunda.",riego:"Cada 2–3 días.",
+ g:"10–14 días",tr:"Con 15–20 cm (~10–12 semanas).",nota:"Trasplantar en agujeros profundos hechos con una estaca, para que blanquee el tallo."},
+{n:"Apio",e:"🌿",sci:"Apium graveolens",t:"hortaliza",m:"almacigo",ms:[6,7,8,9],tmin:12,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Necesita humedad constante y el sol de tarde se la evapora.",
+ tierra:"Rica y que retenga humedad.",riego:"Cada 1–2 días. Humedad constante.",
+ g:"14–21 días",tr:"Con 4–5 hojas (~8–10 semanas). A 25–30 cm.",
+ nota:"Germinación lenta. Semilla muy chica: NO cubrir, necesita luz. Aporcá el tallo para blanquearlo."},
+{n:"Perejil",e:"🌿",sci:"Petroselinum crispum",t:"hortaliza",m:"ambos",ms:[2,3,4,5,6,7,8,9,10],tmin:8,
+ sol:"Sol o media sombra",or:"M",orTxt:"Lado de la mañana. Con sol de tarde fuerte la hoja se pone dura.",
+ tierra:"Común, fresca.",riego:"Cada 2 días.",
+ g:"14–21 días",tr:"Con 4–5 hojas (~8–10 semanas).",nota:"Germinación lenta: remojá la semilla 12 h antes. Cortá siempre desde afuera."},
+
+/* ---------- HORTALIZAS: calor ---------- */
+{n:"Tomate Redondo",e:"🍅",sci:"Solanum lycopersicum",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:16,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. Cuantas más horas de sol, más fruta y más dulce.",
+ tierra:"Rica, profunda, bien drenada.",riego:"Cada 2 días. Regular, sin mojar la hoja.",
+ g:"7–14 días (con 20–25 °C)",tr:"Con 4–5 hojas (~6–7 semanas), pasadas las heladas.",
+ nota:"Germina solo con calor: almácigo protegido o bajo techo. Necesita tutor."},
+{n:"Tomate Perita",e:"🍅",sci:"Solanum lycopersicum",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:16,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde.",
+ tierra:"Rica y drenada.",riego:"Cada 2 días.",
+ g:"7–14 días (con 20–25 °C)",tr:"Con 4–5 hojas, pasadas las heladas.",nota:"Igual que el redondo. Ideal para salsa."},
+{n:"Pimiento Morrón",e:"🫑",sci:"Capsicum annuum",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:18,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. El calor acumulado del ladrillo le viene perfecto.",
+ tierra:"Rica, suelta, drenada.",riego:"Cada 2 días.",
+ g:"10–20 días (con 22–25 °C)",tr:"Con 5–6 hojas (~8 semanas).",nota:"Desarrollo lento. Sin calor no germina: tapá el almácigo o metelo adentro."},
+{n:"Ají Vinagre",e:"🌶️",sci:"Capsicum annuum",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:18,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde.",
+ tierra:"Suelta y drenada.",riego:"Cada 2 días.",
+ g:"10–20 días (con 22–25 °C)",tr:"Con 5–6 hojas.",nota:"Mismo manejo que el morrón."},
+{n:"Ají Picante",e:"🌶️",sci:"Capsicum annuum",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:18,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. Cuanto más calor, más picante sale.",
+ tierra:"Suelta y drenada.",riego:"Cada 2 días.",
+ g:"10–20 días (con 22–25 °C)",tr:"Con 5–6 hojas.",nota:"Mismo manejo que el morrón."},
+{n:"Berenjena",e:"🍆",sci:"Solanum melongena",t:"hortaliza",m:"almacigo",ms:[7,8,9],tmin:18,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. Es la más exigente en calor de las tres.",
+ tierra:"Rica y profunda.",riego:"Cada 2 días.",
+ g:"10–20 días (con 22–25 °C)",tr:"Con 5–6 hojas (~8 semanas).",nota:"Ciclo largo."},
+{n:"Albahaca",e:"🌿",sci:"Ocimum basilicum",t:"hortaliza",m:"ambos",ms:[9,10,11],tmin:16,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Con el sol de tarde más duro de enero se marchita al mediodía, aunque se recupera.",
+ tierra:"Rica, suelta, drenada.",riego:"Cada 2 días. No mojar la hoja.",
+ g:"5–10 días",tr:"Con 4–5 hojas.",nota:"No tolera nada de frío. Pinzá las flores para que siga dando hoja. Compañera del tomate."},
+{n:"Zapallito de Tronco",e:"🟢",sci:"Cucurbita maxima",t:"hortaliza",m:"ambos",ms:[9,10,11,12],tmin:16,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera. Lo que necesita es espacio, no una orientación en particular.",
+ tierra:"Rica, con compost.",riego:"Cada 2–3 días, abundante.",
+ g:"5–10 días",tr:"Con 2–3 hojas. A 80 cm–1 m.",nota:"Ocupa mucho espacio. Muy productivo."},
+{n:"Zucchini",e:"🥒",sci:"Cucurbita pepo",t:"hortaliza",m:"ambos",ms:[9,10,11,12],tmin:16,
+ sol:"Sol pleno",or:"C",orTxt:"Cualquiera de los dos.",
+ tierra:"Rica, con compost.",riego:"Cada 2–3 días, abundante.",
+ g:"5–10 días",tr:"Con 2–3 hojas. A 80 cm.",nota:"Muy sensible al frío. Cosechar chico y seguido."},
+{n:"Pepino",e:"🥒",sci:"Cucumis sativus",t:"hortaliza",m:"ambos",ms:[9,10,11,12],tmin:16,
+ sol:"Sol pleno",or:"M",orTxt:"Lado de la mañana. Necesita mucha agua y el sol de tarde lo estresa; con estrés amarga.",
+ tierra:"Rica y drenada.",riego:"Cada 2 días. Necesita mucha agua.",
+ g:"5–10 días",tr:"Con 2–3 hojas.",nota:"Mejor con tutor o espaldera: da frutos más rectos y sanos."},
+{n:"Maíz",e:"🌽",sci:"Zea mays",t:"hortaliza",m:"directo",ms:[9,10,11,12],tmin:15,
+ sol:"Sol pleno",or:"T",orTxt:"Aguanta cualquier sol. Ubicalo donde no le haga sombra al resto de la huerta.",
+ tierra:"Rica en nitrógeno.",riego:"Cada 2–3 días, abundante.",
+ g:"7–10 días",c:"90–120 días",nota:"Sembrar en bloque de varias filas, no en línea única: se poliniza con el viento."},
+{n:"Girasol",e:"🌻",sci:"Helianthus annuus",t:"hortaliza",m:"directo",ms:[9,10,11],tmin:14,
+ sol:"Sol pleno",or:"T",orTxt:"Aguanta cualquier sol. Ojo con la sombra que proyecta sobre lo demás.",
+ tierra:"Común, profunda.",riego:"Cada 3 días.",
+ g:"7–12 días",c:"90–120 días",nota:"Sembrar donde no le haga sombra a la huerta."},
+{n:"Melón Rocío de Miel",e:"🍈",sci:"Cucumis melo",t:"hortaliza",m:"directo",ms:[10,11],tmin:20,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde. Cuanto más calor, más dulce la fruta.",
+ tierra:"Rica, suelta, muy drenada.",riego:"Cada 2–3 días. Cortar cerca de la cosecha.",
+ g:"7–12 días",c:"100–130 días",nota:"Necesita suelo bien caliente. Ocupa mucho espacio."},
+{n:"Melón Escrito",e:"🍈",sci:"Cucumis melo",t:"hortaliza",m:"directo",ms:[10,11],tmin:20,
+ sol:"Sol pleno",or:"T",orTxt:"Tapial del sol de tarde.",
+ tierra:"Rica y drenada.",riego:"Cada 2–3 días.",
+ g:"7–12 días",c:"100–130 días",nota:"Igual que el rocío de miel."},
+{n:"Sandía",e:"🍉",sci:"Citrullus lanatus",t:"hortaliza",m:"directo",ms:[10,11],tmin:20,
+ sol:"Sol pleno intenso",or:"T",orTxt:"Tapial del sol de tarde. La más exigente en calor de todas.",
+ tierra:"Suelta, arenosa, muy drenada.",riego:"Cada 2–3 días. Cortar al madurar el fruto.",
+ g:"7–12 días",c:"110–140 días",nota:"Necesita mucho calor y mucho espacio."}
+];
+
+/* ═══ 2. ESTADO ═══ */
+const LAT=-31.87, LON=-61.68, LUGAR="Landeta, Santa Fe";
+const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const DIA=["dom","lun","mar","mié","jue","vie","sáb"];
+let tab="ahora", fTipo="todo", fMet="todo", fOr="todo", q="", abierta=null, clima=null;
+
+const ls={
+  get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
+  del(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+const propias=()=>ls.get("semillas",[]);
+const todas=()=>BASE.concat(propias());
+
+/* ═══ 3. CLIMA (Open-Meteo, sin API key) ═══ */
+async function cargarClima(){
+  const u="https://api.open-meteo.com/v1/forecast?latitude="+LAT+"&longitude="+LON
+    +"&current=temperature_2m,weather_code&hourly=soil_temperature_6cm"
+    +"&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code"
+    +"&timezone=America%2FArgentina%2FBuenos_Aires&forecast_days=7";
+  try{
+    const r=await fetch(u); if(!r.ok) throw 0;
+    const d=await r.json();
+    const s=(d.hourly?.soil_temperature_6cm||[]).slice(0,48).filter(x=>x!=null);
+    clima={temp:Math.round(d.current.temperature_2m),code:d.current.weather_code,
+      suelo:s.length?Math.round(s.reduce((a,b)=>a+b,0)/s.length):null,
+      dias:d.daily.time.map((t,i)=>({fecha:t,max:Math.round(d.daily.temperature_2m_max[i]),
+        min:Math.round(d.daily.temperature_2m_min[i]),pp:d.daily.precipitation_probability_max[i]??0,
+        code:d.daily.weather_code[i]}))};
+    ls.set("climaCache",{t:Date.now(),d:clima});
+  }catch(e){const c=ls.get("climaCache",null); if(c) clima=c.d}
+  pintarClima(); render();
+}
+const ICO=c=>c===0?"☀️":c<3?"🌤️":c<50?"☁️":c<60?"🌦️":c<70?"🌧️":c<80?"❄️":"⛈️";
+
+function pintarClima(){
+  const h=new Date();
+  document.getElementById("hoy").textContent=
+    DIA[h.getDay()]+" "+h.getDate()+" de "+MESL[h.getMonth()]+" · "+LUGAR;
+  if(!clima){document.getElementById("wmeta").textContent="Sin conexión — recomendaciones por fecha.";return}
+  document.getElementById("wtemp").textContent=clima.temp+"°";
+  const d0=clima.dias[0];
+  document.getElementById("wmeta").innerHTML=
+    ICO(clima.code)+" máx "+d0.max+"° / mín "+d0.min+"°<br>"
+    +(clima.suelo!=null?"🌡️ Suelo a 6 cm: <b>"+clima.suelo+"°</b><br>":"")
+    +"💧 Lluvia hoy: "+d0.pp+"%";
+  document.getElementById("wdays").innerHTML=clima.dias.map((d,i)=>{
+    const f=new Date(d.fecha+"T12:00:00");
+    return '<div class="wday"><b>'+(i?DIA[f.getDay()]:"hoy")+'</b><span>'+ICO(d.code)+' '+d.max+'°</span><i>'+d.min+'° · '+d.pp+'%</i></div>';
+  }).join("");
+}
+
+/* ═══ 4. RECOMENDACIÓN ═══ */
+function evaluar(p){
+  const mes=new Date().getMonth()+1, enMes=p.ms.includes(mes);
+  const minProx=clima?Math.min(...clima.dias.map(d=>d.min)):null;
+  const suelo=clima?clima.suelo:null;
+  if(!enMes){
+    let prox=null;
+    for(let i=1;i<=12;i++){const m=(mes+i-1)%12+1; if(p.ms.includes(m)){prox=m;break}}
+    return {ok:false,nivel:"esperar",txt:"Fuera de época. Próxima ventana: "+MESL[prox-1]+"."};
+  }
+  if(suelo!=null&&p.tmin&&suelo<p.tmin-2)
+    return {ok:false,nivel:"frio",txt:"Está en época, pero el suelo está a "+suelo+"° y necesita ~"+p.tmin+"°. Almácigo protegido, o esperá unos días."};
+  if(suelo!=null&&p.tmin&&suelo<p.tmin)
+    return {ok:true,nivel:"justo",txt:"En el límite: suelo a "+suelo+"°, ideal desde "+p.tmin+"°. En almácigo protegido anda bien."};
+  if(minProx!=null&&minProx<=3&&p.tmin>=14)
+    return {ok:true,nivel:"justo",txt:"Se pronostican "+minProx+"° de mínima. Sembrable, pero protegé el almácigo de noche."};
+  return {ok:true,nivel:"si",txt:"Buen momento. Época correcta"+(suelo!=null?" y suelo a "+suelo+"°":"")+"."};
+}
+
+/* ═══ 5. FOTOS (Wikipedia, sin API key) ═══ */
+const fotoCache={};
+async function traerFoto(sci,cont){
+  if(!sci){cont.innerHTML='<div class="ph">Sin nombre científico cargado.</div>';return}
+  if(fotoCache[sci]!==undefined){pintarFoto(fotoCache[sci],cont);return}
+  cont.innerHTML='<div class="ph">Buscando foto…</div>';
+  let url=null;
+  for(const lang of ["es","en"]){
+    try{
+      const r=await fetch("https://"+lang+".wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(sci));
+      if(!r.ok) continue;
+      const d=await r.json();
+      if(d.thumbnail?.source){url=d.thumbnail.source.replace(/\/\d+px-/,"/600px-");break}
+    }catch(e){}
+  }
+  fotoCache[sci]=url; pintarFoto(url,cont);
+}
+function pintarFoto(url,cont){
+  cont.innerHTML=url?'<img src="'+url+'" alt="" loading="lazy">'
+    :'<div class="ph">No encontré foto automática. Usá los enlaces de abajo.</div>';
+}
+
+/* ═══ 6. RENDER ═══ */
+const MET={directo:["🌍 Directo","var(--orangeL)","var(--orange)"],
+           almacigo:["🌱 Almácigo","var(--tealL)","var(--teal)"],
+           ambos:["🔄 Directo o almácigo","var(--purpleL)","var(--purple)"]};
+const OR={T:["🌇 Sol de tarde","var(--sunTL)","var(--sunT)"],
+          M:["🌅 Sol de mañana","var(--sunML)","var(--sunM)"],
+          C:["🔆 Cualquier lado","var(--greenL)","var(--green)"]};
+
+function render(){
+  document.getElementById("chips").innerHTML=
+    [["tipo","todo","🌿 Todo"],["tipo","flor","🌸 Flores"],["tipo","hortaliza","🥬 Hortalizas"],
+     ["met","todo","Cualquier método"],["met","directo","🌍 Directo"],["met","almacigo","🌱 Almácigo"],
+     ["or","todo","Cualquier sol"],["or","T","🌇 Sol de tarde"],["or","M","🌅 Sol de mañana"]]
+    .map(([g,v,l])=>{const act=g==="tipo"?fTipo:g==="met"?fMet:fOr;
+      return '<button class="chip'+(act===v?" on":"")+'" data-g="'+g+'" data-v="'+v+'">'+l+'</button>'}).join("");
+
+  let lista=todas().map(p=>({p,ev:evaluar(p)}));
+  if(tab==="ahora")   lista=lista.filter(x=>x.ev.ok);
+  if(tab==="esperar") lista=lista.filter(x=>!x.ev.ok);
+  if(fTipo!=="todo")  lista=lista.filter(x=>x.p.t===fTipo);
+  if(fMet!=="todo")   lista=lista.filter(x=>x.p.m===fMet||x.p.m==="ambos");
+  if(fOr!=="todo")    lista=lista.filter(x=>x.p.or===fOr||x.p.or==="C");
+  if(q) lista=lista.filter(x=>x.p.n.toLowerCase().includes(q)||(x.p.sci||"").toLowerCase().includes(q));
+  const ord={si:0,justo:1,frio:2,esperar:3};
+  lista.sort((a,b)=>ord[a.ev.nivel]-ord[b.ev.nivel]||a.p.n.localeCompare(b.p.n));
+
+  document.getElementById("count").textContent=lista.length+" variedades · tocá para ver detalles";
+
+  document.getElementById("list").innerHTML=lista.map(({p,ev})=>{
+    const id=p.n, ab=abierta===id, M=MET[p.m], O=OR[p.or||"C"];
+    const col=ev.nivel==="si"?"var(--green)":ev.nivel==="justo"?"var(--amber)":ev.nivel==="frio"?"var(--orange)":"#9e9d24";
+    const bg =ev.nivel==="si"?"var(--greenL)":ev.nivel==="justo"?"var(--amberL)":ev.nivel==="frio"?"var(--orangeL)":"#f5f5e8";
+    const gq=encodeURIComponent(p.n+" "+(p.sci||"")+" planta");
+    return '<div class="card'+(ab?" open":"")+'" style="border-left-color:'+col+'" data-id="'+esc(id)+'">'
+      +'<div class="chead"><span class="emoji">'+p.e+'</span><div style="flex:1;min-width:0">'
+      +'<div class="cname">'+p.n+(p.propia?' <span class="sci">(tuya)</span>':'')
+        +(p.sci?'<div class="sci">'+p.sci+'</div>':'')+'</div>'
+      +'<div class="tags">'
+      +'<span class="tag" style="background:'+M[1]+';color:'+M[2]+'">'+M[0]+'</span>'
+      +'<span class="tag" style="background:'+O[1]+';color:'+O[2]+'">'+O[0]+'</span>'
+      +'<span class="tag" style="background:'+bg+';color:'+col+'">'
+        +({si:"✅ Ahora",justo:"⚠️ Al límite",frio:"🌡️ Suelo frío",esperar:"⏳ Esperar"}[ev.nivel])+'</span>'
+      +'</div></div><span class="arrow">'+(ab?"▲":"▼")+'</span></div>'
+      +(ab?'<div class="cbody">'
+        +'<div class="why" style="background:'+bg+';color:'+col+'">'+ev.txt+'</div>'
+        +'<div class="foto" data-sci="'+esc(p.sci||"")+'"></div>'
+        +'<div class="links">'
+          +'<a href="https://www.google.com/search?tbm=isch&q='+gq+'" target="_blank" rel="noopener">📷 Más fotos</a>'
+          +'<a href="https://es.wikipedia.org/wiki/Special:Search?search='+encodeURIComponent(p.sci||p.n)+'" target="_blank" rel="noopener">📖 Wikipedia</a>'
+        +'</div>'
+        +'<div class="orient o-'+(p.or||"C")+'"><b>Dónde plantarla</b>'+(p.orTxt||"—")+'</div>'
+        +'<div class="grid">'
+        +ff("☀️ Horas de sol",p.sol)+ff("💧 Riego",p.riego)
+        +ff("🪴 Tierra",p.tierra,1)
+        +(p.g?ff("🌱 Germinación",p.g):"")
+        +(p.c?ff("🍽️ Cosecha",p.c):"")
+        +(p.tr?ff("🔄 Trasplante",p.tr,1):"")
+        +'<div class="fact wide"><div class="k">📅 Meses de siembra</div><div class="v">'
+          +p.ms.slice().sort((a,b)=>a-b).map(m=>MES[m-1]).join(" · ")+'</div></div>'
+        +(p.nota?'<div class="fact wide"><div class="k">📝 Notas</div><div class="v">'+p.nota+'</div></div>':"")
+        +'</div>'
+        +(p.propia?'<button class="save" style="background:var(--redL);color:var(--red);margin-top:10px" data-del="'+esc(p.n)+'">Borrar esta semilla</button>':"")
+        +'</div>':"")
+      +'</div>';
+  }).join("")||'<div style="text-align:center;color:var(--muted);padding:30px 0;font-size:13px">Nada acá. Probá otro filtro.</div>';
+
+  const fc=document.querySelector(".foto");
+  if(fc) traerFoto(fc.dataset.sci,fc);
+}
+const ff=(k,v,w)=>v?'<div class="fact'+(w?" wide":"")+'"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>':"";
+function esc(s){return String(s).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))}
+
+/* ═══ 7. EVENTOS ═══ */
+document.querySelector(".seg").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  tab=b.dataset.tab;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));abierta=null;render()};
+document.getElementById("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;
+  b.dataset.g==="tipo"?fTipo=b.dataset.v:b.dataset.g==="met"?fMet=b.dataset.v:fOr=b.dataset.v;abierta=null;render()};
+document.getElementById("q").oninput=e=>{q=e.target.value.toLowerCase().trim();render()};
+document.getElementById("collapse").onclick=()=>{abierta=null;render()};
+document.getElementById("list").onclick=e=>{
+  if(e.target.closest("a"))return;
+  const d=e.target.closest("[data-del]");
+  if(d){if(confirm("¿Borrar "+d.dataset.del+"?")){ls.set("semillas",propias().filter(s=>s.n!==d.dataset.del));abierta=null;render()}return}
+  const c=e.target.closest(".card"); if(!c)return;
+  abierta=abierta===c.dataset.id?null:c.dataset.id; render();
+};
+
+const open=id=>document.getElementById(id).classList.add("on");
+const close=()=>document.querySelectorAll(".modal").forEach(m=>m.classList.remove("on"));
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=close);
+document.querySelectorAll(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)close()});
+
+let mesesSel=[];
+document.getElementById("nMeses").innerHTML=MES.map((m,i)=>'<button data-m="'+(i+1)+'">'+m+'</button>').join("");
+document.getElementById("nMeses").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  const m=+b.dataset.m; mesesSel.includes(m)?mesesSel=mesesSel.filter(x=>x!==m):mesesSel.push(m);
+  b.classList.toggle("on")};
+document.getElementById("openAdd").onclick=()=>open("mAdd");
+
+/* --- completar datos con Claude --- */
+const setMeses=arr=>{mesesSel=arr.filter(m=>m>=1&&m<=12);
+  document.querySelectorAll("#nMeses button").forEach(b=>b.classList.toggle("on",mesesSel.includes(+b.dataset.m)))};
+document.getElementById("autofill").onclick=async()=>{
+  const n=document.getElementById("nNombre").value.trim();
+  const msg=document.getElementById("afMsg"), btn=document.getElementById("autofill");
+  if(!n){msg.textContent="Primero escribí el nombre de la semilla.";return}
+  if(!keyOK()){msg.innerHTML="Falta la clave de Anthropic. Cargala una vez desde el botón 💬 y después volvé acá.";return}
+  btn.disabled=true; msg.textContent="Consultando…";
+  const sys="Devolvé SOLO un objeto JSON, sin texto alrededor ni ```. "
+   +"Datos de cultivo de una planta para Landeta, Santa Fe, Argentina (hemisferio sur, zona pampeana húmeda, heladas de mayo a agosto). "
+   +'Claves exactas: {"sci":"nombre científico","t":"flor|hortaliza","m":"directo|almacigo|ambos",'
+   +'"ms":[meses de siembra como números 1-12],"sol":"Sol pleno|Sol o media sombra|Media sombra",'
+   +'"or":"T|M|C","orTxt":"una frase: T=tapial del sol de tarde, M=tapial del sol de mañana, C=cualquiera, y por qué",'
+   +'"tierra":"tipo de tierra en pocas palabras","riego":"frecuencia y criterio, breve",'
+   +'"tmin":temperatura mínima de suelo en °C para germinar (número),'
+   +'"g":"días de germinación","c":"días hasta cosecha o null","tr":"cuándo trasplantar o null",'
+   +'"nota":"dos o tres consejos concretos de manejo"}. '
+   +"Español rioplatense. Si no es una planta que reconozcas, devolvé {\"error\":\"no reconocida\"}.";
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
+      headers:{"content-type":"application/json","x-api-key":ls.get("apiKey",""),
+               "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-sonnet-5",max_tokens:900,system:sys,
+        messages:[{role:"user",content:n}]})});
+    const d=await r.json();
+    let txt=d.content?.[0]?.text||"";
+    if(!txt) throw new Error(d.error?.message||"sin respuesta");
+    txt=txt.replace(/```json?/gi,"").replace(/```/g,"").trim();
+    const o=JSON.parse(txt.slice(txt.indexOf("{"),txt.lastIndexOf("}")+1));
+    if(o.error){msg.textContent="No reconoció esa planta. Cargala a mano.";btn.disabled=false;return}
+    const set=(id,v)=>{if(v!=null&&v!=="")document.getElementById(id).value=v};
+    set("nSci",o.sci); set("nTierra",o.tierra); set("nRiego",o.riego); set("nTmin",o.tmin);
+    if(o.t) document.getElementById("nTipo").value=o.t;
+    if(o.m) document.getElementById("nMetodo").value=o.m;
+    if(o.or) document.getElementById("nOr").value=o.or;
+    if(o.sol&&[...document.getElementById("nSol").options].some(x=>x.value===o.sol))
+      document.getElementById("nSol").value=o.sol;
+    if(Array.isArray(o.ms)) setMeses(o.ms.map(Number));
+    const extra=[o.g?"Germina en "+o.g+".":"",o.c?"Cosecha a los "+o.c+".":"",
+                 o.tr?"Trasplante: "+o.tr:"",o.nota||""].filter(Boolean).join(" ");
+    set("nNotas",extra);
+    afExtra={g:o.g||"",c:o.c||"",tr:o.tr||"",orTxt:o.orTxt||""};
+    msg.textContent="Listo. Revisá los campos y guardá.";
+  }catch(e){msg.textContent="No pude traer los datos ("+e.message+"). Cargalos a mano.";}
+  btn.disabled=false;
+};
+let afExtra={};
+document.getElementById("saveSeed").onclick=()=>{
+  const n=document.getElementById("nNombre").value.trim();
+  if(!n||!mesesSel.length){alert("Falta el nombre o los meses de siembra.");return}
+  const orv=document.getElementById("nOr").value;
+  const s={n,sci:document.getElementById("nSci").value.trim(),
+    e:document.getElementById("nTipo").value==="flor"?"🌸":"🌿",
+    t:document.getElementById("nTipo").value,m:document.getElementById("nMetodo").value,
+    ms:mesesSel.slice().sort((a,b)=>a-b),sol:document.getElementById("nSol").value,
+    or:orv,
+    orTxt:afExtra.orTxt||{T:"Tapial del sol de tarde.",M:"Tapial del sol de mañana.",C:"Cualquiera de los dos."}[orv],
+    g:afExtra.g||"",c:afExtra.c||"",tr:afExtra.tr||"",
+    tierra:document.getElementById("nTierra").value.trim()||"—",
+    riego:document.getElementById("nRiego").value.trim()||"—",
+    tmin:+document.getElementById("nTmin").value||8,
+    nota:document.getElementById("nNotas").value.trim(),propia:true};
+  ls.set("semillas",propias().concat([s]));
+  ["nNombre","nSci","nTierra","nRiego","nNotas"].forEach(i=>document.getElementById(i).value="");
+  mesesSel=[]; afExtra={};
+  document.querySelectorAll("#nMeses button").forEach(b=>b.classList.remove("on"));
+  document.getElementById("afMsg").textContent="Escribí el nombre y tocá el botón: completa todo para Landeta.";
+  close(); render();
+};
+
+/* ═══ 8. CHAT ═══ */
+let hist=[];
+const keyOK=()=>!!ls.get("apiKey","");
+function chatUI(){
+  document.getElementById("noKey").style.display=keyOK()?"none":"block";
+  document.getElementById("chatUI").style.display=keyOK()?"block":"none";
+}
+document.getElementById("openChat").onclick=()=>{chatUI();open("mChat")};
+document.getElementById("saveKey").onclick=()=>{
+  const k=document.getElementById("apiKey").value.trim();
+  if(!k.startsWith("sk-ant")){alert("No parece una clave válida.");return}
+  ls.set("apiKey",k); chatUI();
+};
+document.getElementById("clearKey").onclick=e=>{e.preventDefault();ls.del("apiKey");hist=[];
+  document.getElementById("chatLog").innerHTML="";chatUI()};
+
+function contexto(){
+  const h=new Date(), mes=h.getMonth()+1;
+  const sem=todas().map(p=>p.n+" ("+p.m+", meses "+p.ms.join("/")+", "
+    +{T:"sol de tarde",M:"sol de mañana",C:"cualquier orientación"}[p.or||"C"]+")").join("; ");
+  return "Sos un asesor de huerta. El usuario está en "+LUGAR+", Argentina (hemisferio sur, zona pampeana húmeda). "
+   +"Tiene dos tapiales: uno que recibe sol de mañana y otro sol de tarde (este último acumula calor en el ladrillo). "
+   +"Hoy es "+h.toLocaleDateString("es-AR")+" (mes "+mes+"). "
+   +(clima?"Clima: ahora "+clima.temp+"°C, hoy máx "+clima.dias[0].max+"° / mín "+clima.dias[0].min+"°, "
+     +"suelo a 6 cm "+(clima.suelo??"?")+"°C. Mínimas de los próximos 7 días: "
+     +clima.dias.map(d=>d.min+"°").join(", ")+". ":"")
+   +"Semillas que tiene: "+sem+". "
+   +"Respondé en español rioplatense, breve y concreto, sin rodeos ni listas largas.";
+}
+async function enviar(){
+  const inp=document.getElementById("chatIn"), txt=inp.value.trim(); if(!txt)return;
+  inp.value=""; hist.push({role:"user",content:txt});
+  const log=document.getElementById("chatLog");
+  log.innerHTML+='<div class="msg u"><span>'+esc(txt)+'</span></div><div class="msg a" id="pend"><span>…</span></div>';
+  log.scrollTop=log.scrollHeight;
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
+      headers:{"content-type":"application/json","x-api-key":ls.get("apiKey",""),
+               "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-sonnet-5",max_tokens:800,system:contexto(),messages:hist})});
+    const d=await r.json();
+    const out=d.content?.[0]?.text||("Error: "+(d.error?.message||"sin respuesta"));
+    hist.push({role:"assistant",content:out});
+    document.getElementById("pend").outerHTML='<div class="msg a"><span>'+esc(out)+'</span></div>';
+  }catch(e){
+    document.getElementById("pend").outerHTML='<div class="msg a"><span>Sin conexión o clave inválida.</span></div>';
+  }
+  log.scrollTop=log.scrollHeight;
+}
+document.getElementById("chatSend").onclick=enviar;
+document.getElementById("chatIn").onkeydown=e=>{if(e.key==="Enter")enviar()};
+
+/* ═══ 9. INICIO ═══ */
+pintarClima(); render(); cargarClima();
+</script>
+</body>
+</html>
