@@ -20,7 +20,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);
-     padding:12px 14px 90px;max-width:620px;margin:0 auto;font-size:15px}
+     padding:12px 16px 90px;max-width:620px;margin:0 auto;font-size:15px}
 h1,h2{margin:0}
 button{font-family:inherit;cursor:pointer;border:none}
 input,select,textarea{font-family:inherit;font-size:15px}
@@ -119,6 +119,58 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
 .chatbar{display:flex;gap:7px;margin-top:9px}
 .chatbar input{flex:1;padding:10px 12px;border-radius:11px;border:1px solid var(--border)}
 .chatbar button{padding:0 16px;border-radius:11px;background:var(--green);color:#fff;font-weight:700}
+
+/* ── Mis huertas ── */
+[hidden]{display:none!important}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{
+  outline:2px solid var(--green);outline-offset:2px}
+.nav{display:flex;gap:8px;margin-bottom:10px}
+.nav button{flex:1;padding:11px 6px;border-radius:12px;font-weight:800;font-size:14px;background:#fff;
+            color:var(--muted);border:1px solid var(--border)}
+.nav button.on{background:var(--text);color:#fff;border-color:var(--text)}
+
+.hz{margin-bottom:18px}
+.hzhead{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.hzname{flex:1;min-width:0}
+.hzname h2{font-size:16px;font-weight:800;letter-spacing:-.2px;overflow-wrap:anywhere}
+.hzname .meta{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px}
+.mini{padding:7px 11px;border-radius:9px;font-size:12.5px;font-weight:700;background:var(--greenL);
+      color:var(--green);white-space:nowrap;flex-shrink:0}
+.mini.ghost{background:#fff;border:1px solid var(--border);color:var(--muted)}
+.vacia{border:1px dashed var(--border);border-radius:12px;padding:12px;font-size:12.5px;color:var(--muted);
+       text-align:center;background:#fff}
+.dias{flex-shrink:0;text-align:right;line-height:1.1;min-width:42px}
+.dias b{display:block;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.dias i{font-style:normal;font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.tagw{white-space:normal;background:#f3f8f2;color:var(--muted)}
+.sub2{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+.sub2.warn{color:var(--amber);font-weight:700}
+.sub2.ok{color:var(--green);font-weight:700}
+.estados{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.estados button{padding:7px 10px;border-radius:9px;font-size:12px;font-weight:700;background:#fff;
+                border:1px solid var(--border);color:var(--muted)}
+.estados button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.acts{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.acts button{flex:1;padding:9px 8px;border-radius:9px;font-size:12.5px;font-weight:700;background:#fff;
+             border:1px solid var(--border);color:var(--green);white-space:nowrap}
+.acts button.dng{color:var(--red);flex:0 0 auto}
+.fin{margin-top:6px}
+.fin summary{font-size:12.5px;color:var(--muted);font-weight:700;cursor:pointer;padding:6px 0}
+.fin .card{opacity:.8}
+.empty{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 16px}
+.empty h2{font-size:17px;margin-bottom:6px}
+.empty p{font-size:13.5px;line-height:1.55;color:var(--muted);margin:0 0 12px}
+.empty .k{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.err{font-size:12.5px;color:var(--red);font-weight:600;margin-top:10px;min-height:1.2em;line-height:1.45}
+.opt{display:flex;gap:4px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:3px}
+.opt button{flex:1;padding:8px;border-radius:8px;font-weight:700;font-size:13px;background:transparent;color:var(--muted)}
+.opt button.on{background:var(--green);color:#fff}
+.tinfo{background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:13px;line-height:1.5}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);
+       background:var(--text);color:#fff;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;
+       z-index:80;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
 </head>
 <body>
@@ -133,6 +185,12 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
   <div class="wdays" id="wdays"></div>
 </div>
 
+<div class="nav" id="nav">
+  <button data-v="semillas" class="on">📖 Semillas</button>
+  <button data-v="huertas">🪴 Mis huertas</button>
+</div>
+
+<div id="vSemillas">
 <div class="seg">
   <button data-tab="ahora" class="on">✅ Sembrar ahora</button>
   <button data-tab="esperar">⏳ Esperar</button>
@@ -143,6 +201,9 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
 <input class="search" id="q" placeholder="Buscar…" autocomplete="off">
 <div class="count"><span id="count"></span><button id="collapse">Cerrar todo</button></div>
 <div id="list"></div>
+</div>
+
+<div id="vHuertas" hidden></div>
 
 <div class="fab">
   <button class="alt" id="openAdd" title="Agregar semilla">＋</button>
@@ -198,7 +259,7 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
     <label>Tu pregunta</label>
     <textarea class="f" id="prepQ" rows="3" placeholder="Ej: ¿qué me conviene sembrar este fin de semana?"></textarea>
     <button class="save" id="prepCopy">📋 Copiar consulta con todo el contexto</button>
-    <div class="hint" id="prepMsg">Copia la pregunta junto con la fecha, el clima, la temperatura del suelo y tus 65 variedades. Pegala en Claude y te responde con todo a la vista.</div>
+    <div class="hint" id="prepMsg">Copia la pregunta junto con la fecha, el clima, la temperatura del suelo, tus variedades y lo que tenés sembrado en cada huerta. Pegala en Claude y te responde con todo a la vista.</div>
     <a class="autofill" id="prepOpen" href="https://claude.ai/new" target="_blank" rel="noopener"
        style="display:block;text-align:center;text-decoration:none;margin-top:8px">Abrir Claude ↗</a>
 
@@ -221,6 +282,85 @@ label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-tra
   </div>
  </div>
 </div>
+
+<div class="modal" id="mHuerta">
+ <div class="sheet">
+  <h2><span id="hTit">Nueva huerta</span> <button data-close aria-label="Cerrar">✕</button></h2>
+  <label for="hNombre">Nombre</label>
+  <input class="f" id="hNombre" placeholder="Ej: Cantero del fondo" autocomplete="off">
+  <label for="hTipo">Qué es</label>
+  <select class="f" id="hTipo">
+    <option value="cantero">🟫 Cantero en tierra</option>
+    <option value="almacigo">🌱 Almácigo / bandeja</option>
+    <option value="maceta">🪴 Maceta / cajón</option>
+  </select>
+  <label for="hSol">Sol que recibe (opcional)</label>
+  <select class="f" id="hSol">
+    <option value="">No sé / indistinto</option>
+    <option value="M">🌅 Sol de mañana</option>
+    <option value="T">🌇 Sol de tarde</option>
+  </select>
+  <div class="hint">Si lo cargás, la app te avisa cuando sembrás algo que prefiere el otro tapial.</div>
+  <div class="err" id="hMsg"></div>
+  <button class="save" id="hSave">Guardar huerta</button>
+  <button class="save" id="hDel" style="background:var(--redL);color:var(--red);margin-top:8px" hidden>Borrar esta huerta</button>
+ </div>
+</div>
+
+<div class="modal" id="mSiembra">
+ <div class="sheet">
+  <h2><span id="sTit">Registrar siembra</span> <button data-close aria-label="Cerrar">✕</button></h2>
+  <label for="sHuerta">Huerta</label>
+  <select class="f" id="sHuerta"></select>
+  <label for="sPlanta">Qué sembraste</label>
+  <input class="f" id="sBuscar" placeholder="Filtrar: tomate, lechuga…" autocomplete="off" style="margin-bottom:6px">
+  <select class="f" id="sPlanta"></select>
+  <div class="hint" id="sOr">¿No está en la lista? Agregala primero desde Semillas, con el botón ＋.</div>
+  <label for="sFecha">Fecha de siembra</label>
+  <input class="f" id="sFecha" type="date">
+  <label for="sCant">Cantidad o lugar (opcional)</label>
+  <input class="f" id="sCant" placeholder="Ej: 2 surcos, 6 celdas, contra el tapial" autocomplete="off">
+  <div id="sGermW" hidden>
+    <label for="sGerm">Fecha en que germinó (opcional)</label>
+    <input class="f" id="sGerm" type="date">
+  </div>
+  <div class="err" id="sMsg"></div>
+  <button class="save" id="sSave">Guardar siembra</button>
+ </div>
+</div>
+
+<div class="modal" id="mTras">
+ <div class="sheet">
+  <h2>Trasplantar <button data-close aria-label="Cerrar">✕</button></h2>
+  <div class="tinfo" id="tInfo"></div>
+  <div id="tSin" hidden>
+    <div class="hint" style="margin-top:12px">Todavía no tenés otra huerta adonde pasarlo.</div>
+    <button class="save" id="tNueva">＋ Crear la huerta de destino</button>
+  </div>
+  <div id="tForm">
+    <label for="tDest">A qué huerta va</label>
+    <select class="f" id="tDest"></select>
+    <label for="tFecha">Fecha de trasplante</label>
+    <input class="f" id="tFecha" type="date">
+    <label id="tModoL">Cuánto pasaste</label>
+    <div class="opt" id="tModo" role="group" aria-labelledby="tModoL">
+      <button data-m="todo" class="on">Todo</button>
+      <button data-m="parte">Una parte</button>
+    </div>
+    <div class="hint" id="tHint"></div>
+    <label for="tCant">Cantidad o lugar en el destino (opcional)</label>
+    <input class="f" id="tCant" placeholder="Ej: 6 plantines, a 50 cm" autocomplete="off">
+    <div id="tRestoW" hidden>
+      <label for="tResto" id="tRestoL">Qué queda en el origen (opcional)</label>
+      <input class="f" id="tResto" placeholder="Ej: 6 celdas" autocomplete="off">
+    </div>
+    <div class="err" id="tMsg"></div>
+    <button class="save" id="tSave">Trasplantar</button>
+  </div>
+ </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ═══ 1. DATOS ═══
@@ -518,10 +658,15 @@ const MESL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","s
 const DIA=["dom","lun","mar","mié","jue","vie","sáb"];
 let tab="ahora", fTipo="todo", fMet="todo", fOr="todo", q="", abierta=null, clima=null;
 
+const mem={}; let sinDisco=false;
 const ls={
-  get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  del(k){try{localStorage.removeItem(k)}catch(e){}}
+  get(k,d){try{const v=JSON.parse(localStorage.getItem(k));if(v!=null)return v}catch(e){}
+           return k in mem?JSON.parse(mem[k]):d},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));delete mem[k]}
+           catch(e){mem[k]=JSON.stringify(v);
+             if(!sinDisco&&k!=="climaCache"&&k!=="vista"){sinDisco=true;
+               setTimeout(()=>aviso("Este navegador no deja guardar. Los cambios se pierden al cerrar."),400)}}},
+  del(k){delete mem[k];try{localStorage.removeItem(k)}catch(e){}}
 };
 const propias=()=>ls.get("semillas",[]);
 const todas=()=>BASE.concat(propias());
@@ -621,6 +766,7 @@ function render(){
     .map(([g,v,l])=>{const act=g==="tipo"?fTipo:g==="met"?fMet:fOr;
       return '<button class="chip'+(act===v?" on":"")+'" data-g="'+g+'" data-v="'+v+'">'+l+'</button>'}).join("");
 
+  const SS=siembras().filter(activa), HH=huertas();
   let lista=todas().map(p=>({p,ev:evaluar(p)}));
   if(tab==="ahora")   lista=lista.filter(x=>x.ev.ok);
   if(tab==="esperar") lista=lista.filter(x=>!x.ev.ok);
@@ -634,7 +780,7 @@ function render(){
   document.getElementById("count").textContent=lista.length+" variedades · tocá para ver detalles";
 
   document.getElementById("list").innerHTML=lista.map(({p,ev})=>{
-    const id=p.n, ab=abierta===id, M=MET[p.m], O=OR[p.or||"C"];
+    const id=p.n, ab=abierta===id, M=MET[p.m], O=OR[p.or||"C"], mias=SS.filter(s=>s.p===p.n);
     const col=ev.nivel==="si"?"var(--green)":ev.nivel==="justo"?"var(--amber)":ev.nivel==="frio"?"var(--orange)":"#9e9d24";
     const bg =ev.nivel==="si"?"var(--greenL)":ev.nivel==="justo"?"var(--amberL)":ev.nivel==="frio"?"var(--orangeL)":"#f5f5e8";
     const gq=encodeURIComponent(p.n+" "+(p.sci||"")+" planta");
@@ -647,6 +793,7 @@ function render(){
       +'<span class="tag" style="background:'+O[1]+';color:'+O[2]+'">'+O[0]+'</span>'
       +'<span class="tag" style="background:'+bg+';color:'+col+'">'
         +({si:"✅ Ahora",justo:"⚠️ Al límite",frio:"🌡️ Suelo frío",esperar:"⏳ Esperar"}[ev.nivel])+'</span>'
+      +(mias.length?'<span class="tag" style="background:var(--text);color:#fff">🪴 Sembrada</span>':'')
       +'</div></div><span class="arrow">'+(ab?"▲":"▼")+'</span></div>'
       +(ab?'<div class="cbody">'
         +'<div class="why" style="background:'+bg+';color:'+col+'">'+ev.txt+'</div>'
@@ -666,6 +813,9 @@ function render(){
           +p.ms.slice().sort((a,b)=>a-b).map(m=>MES[m-1]).join(" · ")+'</div></div>'
         +(p.nota?'<div class="fact wide"><div class="k">📝 Notas</div><div class="v">'+p.nota+'</div></div>':"")
         +'</div>'
+        +(mias.length?'<div class="fact wide" style="margin-top:7px"><div class="k">🪴 En tus huertas</div><div class="v">'
+          +mias.map(s=>{const hh=HH.find(x=>x.id===s.h);return esc(hh?hh.n:"Sin huerta")+" · "+hace(diasDesde(s.f))}).join("<br>")+'</div></div>':"")
+        +'<button class="save" style="margin-top:10px" data-sow="'+esc(p.n)+'">🪴 Registrar siembra</button>'
         +(p.propia?'<button class="save" style="background:var(--redL);color:var(--red);margin-top:10px" data-del="'+esc(p.n)+'">Borrar esta semilla</button>':"")
         +'</div>':"")
       +'</div>';
@@ -687,7 +837,9 @@ document.getElementById("collapse").onclick=()=>{abierta=null;render()};
 document.getElementById("list").onclick=e=>{
   if(e.target.closest("a"))return;
   const d=e.target.closest("[data-del]");
-  if(d){if(confirm("¿Borrar "+d.dataset.del+"?")){ls.set("semillas",propias().filter(s=>s.n!==d.dataset.del));abierta=null;render()}return}
+  const w=e.target.closest("[data-sow]");
+  if(w){abrirSiembra({p:w.dataset.sow});return}
+  if(d){dosToques(d,"Tocá de nuevo para borrar",()=>{ls.set("semillas",propias().filter(s=>s.n!==d.dataset.del));abierta=null;render()});return}
   const c=e.target.closest(".card"); if(!c)return;
   abierta=abierta===c.dataset.id?null:c.dataset.id; render();
 };
@@ -703,6 +855,7 @@ document.getElementById("nMeses").onclick=e=>{const b=e.target.closest("button")
   const m=+b.dataset.m; mesesSel.includes(m)?mesesSel=mesesSel.filter(x=>x!==m):mesesSel.push(m);
   b.classList.toggle("on")};
 document.getElementById("openAdd").onclick=()=>{
+  if(vista==="huertas"){abrirSiembra();return}
   document.getElementById("autofill").style.display=keyOK()?"block":"none";
   open("mAdd");
 };
@@ -800,7 +953,7 @@ document.getElementById("autofill").onclick=async()=>{
 let afExtra={};
 document.getElementById("saveSeed").onclick=()=>{
   const n=document.getElementById("nNombre").value.trim();
-  if(!n||!mesesSel.length){alert("Falta el nombre o los meses de siembra.");return}
+  if(!n||!mesesSel.length){aviso("Falta el nombre o los meses de siembra.");return}
   const orv=document.getElementById("nOr").value;
   const s={n,sci:document.getElementById("nSci").value.trim(),
     e:document.getElementById("nTipo").value==="flor"?"🌸":"🌿",
@@ -848,6 +1001,7 @@ document.getElementById("prepCopy").onclick=async()=>{
   +"Mínimas de los próximos 7 días: "+clima.dias.map(d=>d.min+"°").join(", ")+".\n"
   +"Lluvia próximos 7 días: "+clima.dias.map(d=>d.pp+"%").join(", ")+".\n":"")
 +"Tengo dos tapiales: uno recibe sol de mañana y otro sol de tarde (este último acumula calor en el ladrillo).\n\n"
++textoHuertas()
 +"Estado de mis semillas hoy:\n"+est+"\n\n"
 +"Mi pregunta: "+pregunta+"\n\n"
 +"Respondé en español rioplatense, breve y concreto.";
@@ -864,7 +1018,7 @@ document.getElementById("prepCopy").onclick=async()=>{
 };
 document.getElementById("saveKey").onclick=()=>{
   const k=document.getElementById("apiKey").value.trim();
-  if(!k.startsWith("sk-ant")){alert("No parece una clave válida.");return}
+  if(!k.startsWith("sk-ant")){aviso("No parece una clave válida.");return}
   ls.set("apiKey",k); chatUI();
 };
 document.getElementById("clearKey").onclick=e=>{e.preventDefault();ls.del("apiKey");hist=[];
@@ -881,6 +1035,7 @@ function contexto(){
      +"suelo a 6 cm "+(clima.suelo??"?")+"°C. Mínimas de los próximos 7 días: "
      +clima.dias.map(d=>d.min+"°").join(", ")+". ":"")
    +"Semillas que tiene: "+sem+". "
+   +textoHuertas().replace(/\n+/g," ")
    +"Respondé en español rioplatense, breve y concreto, sin rodeos ni listas largas.";
 }
 async function enviar(){
@@ -906,8 +1061,398 @@ async function enviar(){
 document.getElementById("chatSend").onclick=enviar;
 document.getElementById("chatIn").onkeydown=e=>{if(e.key==="Enter")enviar()};
 
-/* ═══ 9. INICIO ═══ */
-pintarClima(); render(); cargarClima();
+/* ═══ 9. MIS HUERTAS ═══
+   huertas : [{id, n:nombre, tipo:"cantero|almacigo|maceta", or:"M|T|"}]
+   siembras: [{id, h:id de huerta, p:nombre en el catálogo, f:"AAAA-MM-DD" siembra, cant,
+               est:"s|g|c|t|x", fg:germinó, ft:trasplante, de/deN:huerta de origen, ff:cierre}]
+*/
+const $=id=>document.getElementById(id);
+const HT={cantero:["🟫","Cantero en tierra"],almacigo:["🌱","Almácigo / bandeja"],maceta:["🪴","Maceta / cajón"]};
+const tipoH=h=>HT[h.tipo]||HT.cantero;
+const SOL={M:"sol de mañana",T:"sol de tarde"};
+const EST={s:["🌰 Sembrada","var(--amberL)","var(--amber)","sembrada"],
+           g:["🌱 Germinó","var(--greenL)","var(--green)","germinó"],
+           c:["🧺 En cosecha","var(--purpleL)","var(--purple)","en cosecha"],
+           t:["✔ Terminó","#ecefeb","var(--muted)","terminó"],
+           x:["✖ Se perdió","var(--redL)","var(--red)","se perdió"]};
+const huertas=()=>ls.get("huertas",[]);
+const siembras=()=>ls.get("siembras",[]);
+const activa=s=>s.est!=="t"&&s.est!=="x";
+const planta=n=>todas().find(p=>p.n===n);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const estLabel=(s,p)=>s.est==="c"&&p&&p.t==="flor"?"🌸 En flor":(EST[s.est]||EST.s)[0];
+
+/* --- fechas --- */
+const hoyISO=()=>{const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fecha=iso=>new Date(iso+"T12:00:00");
+const entre=(a,b)=>Math.round((fecha(b)-fecha(a))/864e5);
+const diasDesde=iso=>entre(iso,hoyISO());
+const mas=(iso,n)=>{const d=fecha(iso);d.setDate(d.getDate()+n);return d};
+const corta=d=>d.getDate()+" "+MES[d.getMonth()]+(d.getFullYear()!==new Date().getFullYear()?" "+d.getFullYear():"");
+const rangoF=(iso,r)=>r[0]===r[1]?corta(mas(iso,r[0])):corta(mas(iso,r[0]))+" – "+corta(mas(iso,r[1]));
+const hace=n=>n<0?"fecha futura":n===0?"hoy":n===1?"ayer":"hace "+n+" días";
+const plural=(n,a,b)=>n+" "+(n===1?a:b);
+
+/* "7–14 días" → [7,14] · "Con 4–5 hojas (~6–8 semanas)" → [42,56] */
+function rango(t){
+  t=String(t||"");
+  const m=/(\d+)\s*(?:[–-]|a)\s*(\d+)/.exec(t); if(m) return [+m[1],+m[2]];
+  const u=/(\d+)/.exec(t); return u?[+u[1],+u[1]]:null;
+}
+function semanas(t){
+  t=String(t||"");
+  const m=/(\d+)\s*(?:[–-]|a)\s*(\d+)\s*semanas/.exec(t); if(m) return [m[1]*7,m[2]*7];
+  const u=/(\d+)\s*semanas?/.exec(t); return u?[u[1]*7,u[1]*7]:null;
+}
+
+/* qué viene ahora para esta siembra */
+function hito(s,p,h){
+  if(!activa(s)) return {txt:s.ff?"Cerrada el "+corta(fecha(s.ff)):""};
+  const d=diasDesde(s.f);
+  if(d<0) return {txt:""};
+  if(s.est==="c"||!p) return {txt:""};
+  if(s.est==="s"){
+    const g=rango(p.g); if(!g) return {txt:""};
+    if(d>g[1]) return {txt:"Ya debería haber germinado (hasta el "+corta(mas(s.f,g[1]))+")",warn:1};
+    if(d>=g[0]) return {txt:"En días de germinar (hasta el "+corta(mas(s.f,g[1]))+")",ok:1};
+    return {txt:"Germinación esperada: "+rangoF(s.f,g)};
+  }
+  if(h&&h.tipo==="almacigo"&&!s.ft&&p.m!=="directo"){
+    const w=semanas(p.tr);
+    if(w) return d>=w[0]?{txt:"En fecha de trasplante. Fijate si ya tiene las hojas.",ok:1}
+                        :{txt:"Trasplante aprox.: "+rangoF(s.f,w)};
+  }
+  const c=rango(p.c);
+  if(c) return d>=c[0]?{txt:"En fecha de cosecha",ok:1}:{txt:"Cosecha aprox.: "+rangoF(s.f,c)};
+  return {txt:""};
+}
+
+/* --- avisos y confirmaciones sin alert/confirm --- */
+let tToast;
+function aviso(t){const e=$("toast");e.textContent=t;e.classList.add("on");
+  clearTimeout(tToast);tToast=setTimeout(()=>e.classList.remove("on"),2800)}
+function dosToques(b,txt,fn){
+  if(b.dataset.armed){delete b.dataset.armed;fn();return}
+  const o=b.textContent; b.dataset.armed="1"; b.textContent=txt;
+  setTimeout(()=>{if(b.dataset.armed){delete b.dataset.armed;b.textContent=o}},3500);
+}
+
+/* --- vistas --- */
+let vista=ls.get("vista","semillas"); if(location.hash==="#huertas") vista="huertas";
+let hAb=null; const finAb=new Set();
+function verVista(v){
+  vista=v==="huertas"?"huertas":"semillas"; ls.set("vista",vista);
+  $("vSemillas").hidden=vista!=="semillas"; $("vHuertas").hidden=vista!=="huertas";
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===vista));
+  $("openAdd").title=vista==="huertas"?"Registrar siembra":"Agregar semilla";
+  vista==="huertas"?renderH():render();
+}
+$("nav").onclick=e=>{const b=e.target.closest("button");if(b)verVista(b.dataset.v)};
+
+function verFicha(n){
+  tab="todas"; fTipo=fMet=fOr="todo"; q=""; $("q").value=""; abierta=n;
+  document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x.dataset.tab==="todas"));
+  verVista("semillas");
+  const c=document.querySelector("#list .card.open"); if(c) c.scrollIntoView({block:"start"});
+}
+
+/* --- render de huertas --- */
+function filaS(s,h){
+  const p=planta(s.p), ab=hAb===s.id, hi=hito(s,p,h);
+  const d=activa(s)?diasDesde(s.f):entre(s.f,s.ff||hoyISO());
+  const tras=s.ft&&(s.est==="s"||s.est==="g");
+  const e0=EST[s.est]||EST.s;
+  const E=tras?["🔄 Trasplantada","var(--tealL)","var(--teal)"]:[estLabel(s,p),e0[1],e0[2]];
+  return '<div class="card'+(ab?" open":"")+'" style="border-left-color:'+E[2]+'" data-sid="'+s.id+'">'
+    +'<div class="chead"><span class="emoji">'+(p?p.e:"🌿")+'</span><div style="flex:1;min-width:0">'
+    +'<div class="cname">'+esc(s.p)+'</div>'
+    +'<div class="tags"><span class="tag" style="background:'+E[1]+';color:'+E[2]+'">'+E[0]+'</span>'
+    +(s.cant?'<span class="tag tagw">'+esc(s.cant)+'</span>':'')+'</div>'
+    +(hi.txt?'<div class="sub2'+(hi.warn?" warn":hi.ok?" ok":"")+'">'+hi.txt+'</div>':'')
+    +'</div><div class="dias"><b>'+(d<0?"—":d)+'</b><i>'+(d===1?"día":"días")+'</i></div></div>'
+    +(ab?detalleS(s,p,h,d):'')+'</div>';
+}
+function detalleS(s,p,h,d){
+  const g=p&&rango(p.g), c=p&&rango(p.c), w=p&&semanas(p.tr), f=fecha(s.f), on=activa(s);
+  const sem=d>=14?" · "+plural(Math.floor(d/7),"semana","semanas")+(d%7?" y "+plural(d%7,"día","días"):""):"";
+  let germ="";
+  if(s.fg) germ="Germinó a los "+plural(entre(s.f,s.fg),"día","días")+" ("+corta(fecha(s.fg))+")";
+  else if(s.est==="s"&&g) germ="Esperada: "+rangoF(s.f,g)+" ("+esc(p.g)+")";
+  else if(s.est==="g") germ="Sin fecha anotada. Podés cargarla en Editar.";
+  let tr="";
+  if(s.ft) tr="Trasplantada el "+corta(fecha(s.ft))+(s.deN?" desde "+esc(s.deN):"")+", a los "+plural(entre(s.f,s.ft),"día","días");
+  else if(p&&p.tr&&p.m!=="directo") tr=esc(p.tr)+(w?" → "+rangoF(s.f,w):"");
+  const cos=c?"Aprox. "+rangoF(s.f,c)+" ("+esc(p.c)+" desde la siembra)":"";
+  const mal=h&&p&&h.or&&p.or&&p.or!=="C"&&h.or!==p.or;
+  const btnE=k=>'<button data-est="'+k+'" data-id="'+s.id+'"'+(s.est===k?' class="on"':'')+'>'
+    +(k==="c"&&p&&p.t==="flor"?"🌸 En flor":EST[k][0])+'</button>';
+  return '<div class="cbody">'
+    +(mal?'<div class="why" style="background:var(--amberL);color:var(--amber)">Esta variedad prefiere el '+SOL[p.or]
+        +', y esta huerta recibe '+SOL[h.or]+'.</div>':'')
+    +'<div class="grid">'
+    +ff("📅 Sembrada",DIA[f.getDay()]+" "+f.getDate()+" de "+MESL[f.getMonth()]+" de "+f.getFullYear())
+    +ff(on?"⏱️ Tiempo":"⏱️ Duró",on?hace(d)+sem:plural(d,"día","días")+sem)
+    +ff("🌱 Germinación",germ,1)+ff("🔄 Trasplante",tr,1)+ff("🍽️ Cosecha",cos,1)
+    +ff("📍 Cantidad o lugar",s.cant?esc(s.cant):"",1)
+    +(p?ff("💧 Riego",p.riego,1):ff("📖 Catálogo","Esta variedad ya no está en tu catálogo, así que no hay fechas estimadas.",1))
+    +'</div>'
+    +'<div class="estados" role="group" aria-label="Estado">'+["s","g","c","t","x"].map(btnE).join("")+'</div>'
+    +'<div class="acts">'
+    +(on?'<button data-tras="'+s.id+'">🔄 Trasplantar</button>':'')
+    +'<button data-eds="'+s.id+'">✎ Editar</button>'
+    +(p?'<button data-ficha="'+esc(s.p)+'">📖 Ficha</button>':'')
+    +'<button class="dng" data-dels="'+s.id+'">Borrar</button>'
+    +'</div></div>';
+}
+const RAPIDAS=[["Bandeja de almácigos","almacigo",""],["Cantero tapial sol de mañana","cantero","M"],
+               ["Cantero tapial sol de tarde","cantero","T"],["Macetas","maceta",""]];
+function renderH(){
+  const v=$("vHuertas"), H=huertas(), S=siembras();
+  if(!H.length){
+    v.innerHTML='<div class="empty"><h2>Todavía no tenés huertas</h2>'
+      +'<p>Una huerta es cualquier lugar donde sembrás: la bandeja de almácigos, un cantero, unas macetas. '
+      +'Creá una y anotá qué sembraste y cuándo. La app cuenta los días y te dice cuándo debería germinar, '
+      +'cuándo toca trasplantar y cuándo cosechar.</p>'
+      +'<div class="k">Crear con un toque</div><div class="chips">'
+      +RAPIDAS.map((r,i)=>'<button class="chip" data-quick="'+i+'">'+HT[r[1]][0]+' '+r[0]+'</button>').join("")
+      +'</div><button class="save" data-newh style="margin-top:6px">＋ Otra huerta</button></div>';
+    return;
+  }
+  const act=S.filter(activa).length;
+  let html='<div class="count"><span>'+plural(H.length,"huerta","huertas")+' · '
+    +plural(act,"siembra en curso","siembras en curso")+'</span><button data-newh>＋ Nueva huerta</button></div>';
+  H.forEach(h=>{
+    const mine=S.filter(s=>s.h===h.id);
+    const on=mine.filter(activa).sort((a,b)=>b.f.localeCompare(a.f));
+    const off=mine.filter(s=>!activa(s)).sort((a,b)=>(b.ff||b.f).localeCompare(a.ff||a.f));
+    html+='<section class="hz"><div class="hzhead"><span class="emoji">'+tipoH(h)[0]+'</span>'
+      +'<div class="hzname"><h2>'+esc(h.n)+'</h2><div class="meta">'+tipoH(h)[1]
+        +(h.or?" · "+SOL[h.or]:"")+" · "+on.length+" en curso</div></div>"
+      +'<button class="mini" data-adds="'+h.id+'">＋ Sembrar</button>'
+      +'<button class="mini ghost" data-edith="'+h.id+'" aria-label="Editar huerta">✎</button></div>'
+      +(on.length?on.map(s=>filaS(s,h)).join(""):'<div class="vacia">No hay nada en curso acá.</div>')
+      +(off.length?'<details class="fin" data-fin="'+h.id+'"'+(finAb.has(h.id)?" open":"")+'><summary>Ya terminaron ('
+        +off.length+')</summary>'+off.map(s=>filaS(s,h)).join("")+'</details>':'')
+      +'</section>';
+  });
+  const sueltas=S.filter(s=>!H.some(h=>h.id===s.h));
+  if(sueltas.length) html+='<section class="hz"><div class="hzhead"><div class="hzname"><h2>Sin huerta</h2></div></div>'
+    +sueltas.map(s=>filaS(s,null)).join("")+'</section>';
+  html+='<details class="fin" id="resp"><summary>Respaldo de mis datos</summary>'
+    +'<div class="hint">Las huertas y las siembras se guardan solo en este teléfono y en este sitio. '
+    +'Copiá el respaldo cada tanto y guardalo, por ejemplo en un mensaje a vos mismo.</div>'
+    +'<button class="autofill" data-bk="copy">📋 Copiar respaldo</button>'
+    +'<textarea class="f" id="bkIn" rows="3" style="margin-top:8px" placeholder="Para restaurar, pegá acá un respaldo…"></textarea>'
+    +'<button class="autofill" data-bk="load">📥 Restaurar respaldo</button>'
+    +'<div class="hint" id="bkMsg"></div></details>';
+  v.innerHTML=html;
+}
+$("vHuertas").addEventListener("toggle",e=>{const d=e.target;
+  if(d.dataset&&d.dataset.fin) d.open?finAb.add(d.dataset.fin):finAb.delete(d.dataset.fin)},true);
+
+/* --- eventos de la vista --- */
+$("vHuertas").onclick=async e=>{
+  const t=e.target, b=t.closest("button");
+  if(b){
+    const D=b.dataset;
+    if("newh" in D){abrirHuerta();return}
+    if(D.quick){const r=RAPIDAS[+D.quick];
+      ls.set("huertas",huertas().concat([{id:uid(),n:r[0],tipo:r[1],or:r[2]}]));renderH();return}
+    if(D.edith){abrirHuerta(D.edith);return}
+    if(D.adds){abrirSiembra({h:D.adds});return}
+    if(D.est){setEst(D.id,D.est);return}
+    if(D.tras){abrirTras(D.tras);return}
+    if(D.eds){abrirSiembra({id:D.eds});return}
+    if(D.ficha){verFicha(D.ficha);return}
+    if(D.dels){dosToques(b,"Tocá de nuevo",()=>{
+      ls.set("siembras",siembras().filter(s=>s.id!==D.dels));hAb=null;renderH()});return}
+    if(D.bk==="copy"){
+      const ok=await copiar(JSON.stringify({app:"huerta-landeta",fecha:hoyISO(),
+        huertas:huertas(),siembras:siembras(),semillas:propias()}));
+      $("bkMsg").textContent=ok?"✓ Respaldo copiado. Pegalo en un lugar seguro.":"No pude copiar. Probá de nuevo.";return}
+    if(D.bk==="load"){
+      let o; try{o=extraerJSON($("bkIn").value)}catch(err){$("bkMsg").textContent="Eso no parece un respaldo de esta app.";return}
+      if(!Array.isArray(o.huertas)||!Array.isArray(o.siembras)){$("bkMsg").textContent="Eso no parece un respaldo de esta app.";return}
+      dosToques(b,"Reemplaza lo que hay ahora. Tocá de nuevo",()=>{
+        ls.set("huertas",o.huertas); ls.set("siembras",o.siembras);
+        if(Array.isArray(o.semillas)){const P=propias();
+          o.semillas.forEach(s=>{if(s&&s.n&&!todas().some(x=>x.n===s.n))P.push(s)});ls.set("semillas",P)}
+        hAb=null; renderH(); aviso("Respaldo restaurado")});
+      return}
+    return;
+  }
+  if(t.closest("summary,textarea,input,a"))return;
+  const c=t.closest(".card[data-sid]"); if(!c)return;
+  hAb=hAb===c.dataset.sid?null:c.dataset.sid; renderH();
+};
+
+function setEst(id,k){
+  const S=siembras(), s=S.find(x=>x.id===id); if(!s||!EST[k])return;
+  s.est=k;
+  if(k==="s") delete s.fg;
+  else if(k==="g"&&!s.fg){            // solo anoto hoy como fecha si todavía está en días de germinar
+    const p=planta(s.p), g=p&&rango(p.g);
+    if(!g||diasDesde(s.f)<=g[1]+2) s.fg=hoyISO();
+  }
+  if(k==="t"||k==="x"){s.ff=hoyISO();finAb.add(s.h)} else delete s.ff;
+  ls.set("siembras",S); renderH();
+}
+
+/* --- huerta: alta y edición --- */
+let hEdit=null, pend=null;
+function abrirHuerta(id,nota,sigue){
+  if(!sigue) pend=null;
+  const h=id?huertas().find(x=>x.id===id):null; hEdit=h?h.id:null;
+  $("hTit").textContent=h?"Editar huerta":"Nueva huerta";
+  $("hNombre").value=h?h.n:""; $("hTipo").value=h&&HT[h.tipo]?h.tipo:"cantero"; $("hSol").value=h?(h.or||""):"";
+  $("hMsg").textContent=nota||"";
+  const d=$("hDel"); d.hidden=!h; delete d.dataset.armed; d.textContent="Borrar esta huerta";
+  close(); open("mHuerta");
+}
+$("hSave").onclick=()=>{
+  const n=$("hNombre").value.trim(), msg=$("hMsg"), H=huertas();
+  if(!n){msg.textContent="Ponele un nombre a la huerta.";return}
+  if(H.some(x=>x.n.toLowerCase()===n.toLowerCase()&&x.id!==hEdit)){msg.textContent="Ya tenés una huerta con ese nombre.";return}
+  let id=hEdit;
+  const h=hEdit&&H.find(x=>x.id===hEdit);
+  if(h){h.n=n;h.tipo=$("hTipo").value;h.or=$("hSol").value}
+  else{id=uid();H.push({id,n,tipo:$("hTipo").value,or:$("hSol").value})}
+  ls.set("huertas",H); close(); verVista("huertas");
+  if(pend){const o=Object.assign({},pend,{h:id});pend=null;abrirSiembra(o)}
+  else aviso("Huerta guardada");
+};
+$("hDel").onclick=e=>{
+  const n=siembras().filter(s=>s.h===hEdit).length;
+  dosToques(e.currentTarget,n?"Borra también sus "+plural(n,"siembra","siembras")+". Tocá de nuevo":"Tocá de nuevo para borrar",()=>{
+    ls.set("huertas",huertas().filter(h=>h.id!==hEdit));
+    ls.set("siembras",siembras().filter(s=>s.h!==hEdit));
+    close(); verVista("huertas")});
+};
+
+/* --- siembra: alta y edición --- */
+let sEdit=null;
+const optHuertas=(H,sel)=>H.map(h=>'<option value="'+h.id+'"'+(h.id===sel?" selected":"")+'>'+tipoH(h)[0]+' '+esc(h.n)+'</option>').join("");
+function opcionesPlanta(sel){
+  const f=$("sBuscar").value.toLowerCase().trim();
+  const L=todas().filter(p=>!f||p.n.toLowerCase().includes(f)).sort((a,b)=>a.n.localeCompare(b.n,"es"));
+  const op=p=>'<option value="'+esc(p.n)+'">'+p.e+' '+esc(p.n)+'</option>';
+  const grp=(l,x)=>x.length?'<optgroup label="'+l+'">'+x.map(op).join("")+'</optgroup>':"";
+  const el=$("sPlanta");
+  el.innerHTML='<option value="">'+(L.length?"Elegí una variedad…":"Ninguna coincide")+'</option>'
+    +grp("Hortalizas",L.filter(p=>p.t==="hortaliza"))+grp("Flores",L.filter(p=>p.t==="flor"))
+    +grp("Otras",L.filter(p=>p.t!=="hortaliza"&&p.t!=="flor"))
+    +(sel&&!L.some(p=>p.n===sel)&&!f?'<option value="'+esc(sel)+'">'+esc(sel)+'</option>':"");
+  if(sel&&[...el.options].some(o=>o.value===sel)) el.value=sel;
+  else if(f&&L.length===1) el.value=L[0].n;
+  avisoSol();
+}
+function avisoSol(){
+  const h=huertas().find(x=>x.id===$("sHuerta").value), p=planta($("sPlanta").value), o=$("sOr");
+  if(h&&p&&h.or&&p.or&&p.or!=="C"&&h.or!==p.or){
+    o.textContent="Ojo: "+p.n+" prefiere el "+SOL[p.or]+", y "+h.n+" recibe "+SOL[h.or]+".";
+    o.style.color="var(--amber)"; o.style.fontWeight="700";
+  }else{
+    o.textContent=p?(p.orTxt||""):"¿No está en la lista? Agregala primero desde Semillas, con el botón ＋.";
+    o.style.color=""; o.style.fontWeight="";
+  }
+}
+$("sBuscar").oninput=()=>opcionesPlanta($("sPlanta").value);
+$("sPlanta").onchange=avisoSol; $("sHuerta").onchange=avisoSol;
+
+function abrirSiembra(o){
+  o=o||{};
+  const H=huertas();
+  if(!H.length){pend=o;abrirHuerta(null,"Primero creá la huerta donde sembraste.",true);return}
+  const s=o.id?siembras().find(x=>x.id===o.id):null; sEdit=s?s.id:null;
+  $("sTit").textContent=s?"Editar siembra":"Registrar siembra";
+  const pref=s?s.h:(o.h||ls.get("ultH",""));
+  $("sHuerta").innerHTML=optHuertas(H,H.some(h=>h.id===pref)?pref:H[0].id);
+  $("sBuscar").value=""; opcionesPlanta(s?s.p:(o.p||""));
+  $("sFecha").max=hoyISO(); $("sFecha").value=s?s.f:hoyISO();
+  $("sCant").value=s?(s.cant||""):"";
+  $("sGermW").hidden=!s; $("sGerm").max=hoyISO(); $("sGerm").value=s&&s.fg?s.fg:"";
+  $("sMsg").textContent=""; close(); open("mSiembra");
+}
+$("sSave").onclick=()=>{
+  const h=$("sHuerta").value, p=$("sPlanta").value, f=$("sFecha").value, msg=$("sMsg");
+  if(!p){msg.textContent="Elegí qué sembraste.";return}
+  if(!f){msg.textContent="Falta la fecha de siembra.";return}
+  if(f>hoyISO()){msg.textContent="La fecha de siembra no puede ser futura.";return}
+  const S=siembras(), cant=$("sCant").value.trim();
+  if(sEdit){
+    const s=S.find(x=>x.id===sEdit), fg=$("sGerm").value;
+    if(fg&&fg<f){msg.textContent="No puede haber germinado antes de sembrarse.";return}
+    if(s&&s.ft&&s.ft<f){msg.textContent="La siembra no puede ser posterior al trasplante ("+corta(fecha(s.ft))+").";return}
+    if(s){s.h=h;s.p=p;s.f=f;s.cant=cant;
+      if(fg){s.fg=fg;if(s.est==="s")s.est="g"} else delete s.fg}
+    hAb=sEdit;
+  }else{
+    const n={id:uid(),h,p,f,cant,est:"s"}; S.push(n); hAb=n.id;
+  }
+  ls.set("siembras",S); ls.set("ultH",h); close(); verVista("huertas");
+  aviso(sEdit?"Siembra actualizada":"Siembra registrada");
+  const c=document.querySelector('.card[data-sid="'+hAb+'"]'); if(c) c.scrollIntoView({block:"center"});
+};
+
+/* --- trasplante: todo o una parte, a otra huerta --- */
+let tId=null, tModo="todo", tOrigen="";
+function modoTras(m){
+  tModo=m==="parte"?"parte":"todo";
+  document.querySelectorAll("#tModo button").forEach(b=>b.classList.toggle("on",b.dataset.m===tModo));
+  $("tRestoW").hidden=tModo!=="parte";
+  $("tHint").textContent=tModo==="parte"
+    ?"Lo que pasás queda anotado en el destino con la misma fecha de siembra, y el resto sigue en "+tOrigen+". Repetilo por cada huerta adonde lleves plantines."
+    :"La siembra completa se muda al destino y conserva su fecha de siembra.";
+}
+$("tModo").onclick=e=>{const b=e.target.closest("button");if(b)modoTras(b.dataset.m)};
+function abrirTras(id){
+  const s=siembras().find(x=>x.id===id); if(!s)return; tId=id;
+  const H=huertas(), o=H.find(h=>h.id===s.h), otros=H.filter(h=>h.id!==s.h);
+  tOrigen=o?o.n:"el origen";
+  $("tInfo").textContent=s.p+" · sembrado el "+corta(fecha(s.f))+" ("+hace(diasDesde(s.f))+") en "+tOrigen+(s.cant?" · "+s.cant:"");
+  $("tSin").hidden=!!otros.length; $("tForm").hidden=!otros.length;
+  $("tDest").innerHTML=optHuertas(otros,"");
+  $("tFecha").min=s.f; $("tFecha").max=hoyISO(); $("tFecha").value=hoyISO();
+  $("tCant").value=""; $("tResto").value=s.cant||"";
+  $("tRestoL").textContent="Qué queda en "+tOrigen+" (opcional)";
+  $("tMsg").textContent=""; modoTras("todo"); close(); open("mTras");
+}
+$("tNueva").onclick=()=>abrirHuerta();
+$("tSave").onclick=()=>{
+  const S=siembras(), s=S.find(x=>x.id===tId), msg=$("tMsg");
+  const dest=$("tDest").value, ft=$("tFecha").value, cant=$("tCant").value.trim();
+  if(!s){close();return}
+  if(!dest){msg.textContent="Elegí la huerta de destino.";return}
+  if(!ft){msg.textContent="Falta la fecha de trasplante.";return}
+  if(ft<s.f){msg.textContent="El trasplante no puede ser anterior a la siembra ("+corta(fecha(s.f))+").";return}
+  if(ft>hoyISO()){msg.textContent="La fecha de trasplante no puede ser futura.";return}
+  const est=s.est==="s"?"g":s.est;
+  if(tModo==="parte"){
+    const n=Object.assign({},s,{id:uid(),h:dest,ft,de:s.h,deN:tOrigen,cant,est});
+    s.cant=$("tResto").value.trim(); S.push(n); hAb=n.id;
+  }else{
+    s.de=s.h; s.deN=tOrigen; s.h=dest; s.ft=ft; s.est=est; if(cant) s.cant=cant; hAb=s.id;
+  }
+  ls.set("siembras",S); close(); renderH();
+  aviso(tModo==="parte"?"Parte trasplantada. El resto sigue en "+tOrigen:"Trasplantada");
+  const c=document.querySelector('.card[data-sid="'+hAb+'"]'); if(c) c.scrollIntoView({block:"center"});
+};
+
+/* --- para el chat: qué hay sembrado en cada huerta --- */
+function textoHuertas(){
+  const H=huertas(), S=siembras().filter(activa); if(!H.length) return "";
+  return "Mis huertas y lo que tengo sembrado hoy:\n"+H.map(h=>{
+    const m=S.filter(s=>s.h===h.id);
+    return "- "+h.n+" ("+tipoH(h)[1].toLowerCase()+(h.or?", "+SOL[h.or]:"")+"): "
+      +(m.length?m.map(s=>s.p+" sembrado el "+fecha(s.f).toLocaleDateString("es-AR")+" ("+hace(diasDesde(s.f))+", "
+        +(EST[s.est]||EST.s)[3]+(s.ft?", trasplantado el "+fecha(s.ft).toLocaleDateString("es-AR"):"")
+        +(s.cant?", "+s.cant:"")+")").join("; "):"vacía");
+  }).join("\n")+"\n\n";
+}
+
+/* ═══ 10. INICIO ═══ */
+pintarClima(); verVista(vista); cargarClima();
 </script>
 </body>
 </html>
